@@ -304,7 +304,7 @@ export class DictPanel extends React.Component<DictPanelProps & { t: Translation
               {shouldLoadAudioBox // x-frame-options: SAMEORIGIN
                 ? <iframe
                     className='panel-AudioBoxFrame'
-                    src={browser.runtime.getURL('/audio-control.html')}
+                    src={browser._URL('/audio-control.html')}
                     sandbox='allow-same-origin allow-scripts'
                   />
                 : null

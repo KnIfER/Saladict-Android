@@ -39,8 +39,10 @@ const i18n$$ = new ReplaySubject<TranslationFunction>(1)
 const i18n = i18nLoader({ context: contextLocles }, 'context', (_, t) => i18n$$.next(t))
 i18n.on('languageChanged', () => i18n$$.next(i18n.t.bind(i18n)))
 
-browser.contextMenus.onClicked.addListener(handleContextMenusClick)
-message.addListener<MsgContextMenusClick>(MsgType.ContextMenusClick, handleContextMenusClick)
+if(browser.isPlugin){
+  browser.contextMenus.onClicked.addListener(handleContextMenusClick)
+  message.addListener<MsgContextMenusClick>(MsgType.ContextMenusClick, handleContextMenusClick)
+}
 
 export function init (initConfig: ContextMenusConfig): Observable<void> {
   if (setMenus$$) { return setMenus$$ }
@@ -90,7 +92,7 @@ export function init (initConfig: ContextMenusConfig): Observable<void> {
  * @param force load the current tab anyway
  */
 export async function openPDF (url?: string, force?: boolean) {
-  const pdfURL = browser.runtime.getURL('static/pdf/web/viewer.html')
+  const pdfURL = browser._URL('static/pdf/web/viewer.html')
   if (url) {
     // open link as pdf
     return openURL(pdfURL + '?file=' + encodeURIComponent(url))
@@ -124,10 +126,10 @@ export function openYoudao () {
   })
   .catch(() => {
     // error msg
-    browser.notifications.create({
+    if(browser.isPlugin)browser.notifications.create({
       type: 'basic',
       eventTime: Date.now() + 4000,
-      iconUrl: browser.runtime.getURL(`static/icon-128.png`),
+      iconUrl: browser._URL(`static/icon-128.png`),
       title: 'Saladict',
       message: i18n.t('notification_youdao_err')
     })
@@ -359,10 +361,10 @@ function handleContextMenusClick (info: ContextMenusClickInfo) {
       openPDF(linkUrl, info.menuItemId !== 'view_as_pdf_ba')
       break
     case 'search_history':
-      openURL(browser.runtime.getURL('history.html'))
+      openURL(browser._URL('history.html'))
       break
     case 'notebook':
-      openURL(browser.runtime.getURL('notebook.html'))
+      openURL(browser._URL('notebook.html'))
       break
     case 'saladict':
       requestSelection()

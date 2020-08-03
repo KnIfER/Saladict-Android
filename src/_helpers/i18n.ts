@@ -21,7 +21,7 @@ export function i18nLoader (
   const namespaces = Object.keys(locales)
   const instance = i18n
     .init({
-      lng: browser.i18n.getUILanguage(),
+      lng: browser._Language(),
       fallbackLng: 'en',
       debug: process.env.NODE_ENV === 'development',
       saveMissing: false,

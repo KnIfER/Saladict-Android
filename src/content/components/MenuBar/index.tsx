@@ -485,9 +485,10 @@ export default class MenuBar extends React.PureComponent<MenuBarProps, MenuBarSt
 
         <div className='panel-MenuBar_SettingsWrapper'>
           <button className='panel-MenuBar_Btn'
-            onClick={this.handleIconSettingsClick}
+            onClick={this.showProfilePanel}
+            // handleIconSettingsClick
             onKeyUp={this.handleIconSettingsKeyUp}
-            onMouseOver={this.showProfilePanel}
+            // onMouseOver={this.showProfilePanel}
             onMouseOut={this.hideProfilePanel}
             disabled={isSaladictOptionsPage}
           >

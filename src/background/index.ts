@@ -5,24 +5,28 @@ import { getActiveProfile, addActiveProfileListener } from '@/_helpers/profile-m
 import { injectAnalytics } from '@/_helpers/analytics'
 import { startSyncServiceInterval } from './sync-manager'
 import { init as initMenus } from './context-menus'
-import { init as initPdf } from './pdf-sniffer'
+//import { init as initPdf } from './pdf-sniffer'
 import './types'
 
-browser.browserAction.setBadgeBackgroundColor({ color: '#C0392B' })
+console.log('HAHAHA', browser);
+
+if(browser.isPlugin) {
+  browser.browserAction.setBadgeBackgroundColor({ color: '#C0392B' })
+}
 
 startSyncServiceInterval()
 
 getConfig().then(async config => {
   window.appConfig = config
   initMenus(config.contextMenus)
-  initPdf(config)
+  //initPdf(config)
   injectAnalytics('/background')
 
-  browser.browserAction.setBadgeText({ text: window.appConfig.active ? '' : 'off' })
+  if(browser.isPlugin) browser.browserAction.setBadgeText({ text: window.appConfig.active ? '' : 'off' })
 
   addConfigListener(({ newConfig }) => {
     window.appConfig = newConfig
-    browser.browserAction.setBadgeText({ text: newConfig.active ? '' : 'off' })
+    if(browser.isPlugin) browser.browserAction.setBadgeText({ text: newConfig.active ? '' : 'off' })
   })
 })
 

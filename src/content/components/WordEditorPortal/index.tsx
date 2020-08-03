@@ -20,7 +20,7 @@ export default class WordEditorPortal extends React.Component<WordEditorPortalPr
   el = document.createElement('div')
   frameHead = '<meta name="viewport" content="width=device-width, initial-scale=1">\n' + (
     process.env.NODE_ENV === 'production'
-      ? `<link type="text/css" rel="stylesheet" href="${browser.runtime.getURL('wordeditor.css')}" />`
+      ? `<link type="text/css" rel="stylesheet" href="${browser._URL('wordeditor.css')}" />`
       : Array.from(document.querySelectorAll<HTMLLinkElement>('link[rel="stylesheet"]'))
         .map(link => link.outerHTML)
         .join('\n')

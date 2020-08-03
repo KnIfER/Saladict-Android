@@ -16,3 +16,16 @@ interface Window {
   // Options page
   __SALADICT_LAST_SEARCH__?: string
 }
+
+
+declare namespace browser{
+  var isPlugin:boolean;
+  function _Language():string;
+  function runtime_onMessage_addListener(vrw:any, listener:any):any;
+  function storage_onChanged_addListener(vrw:any, listener:any):any;
+  function storage_onChanged_removeListener(vrw:any, listener:any):any;
+  function storage_get(vrw:any, fielf:any, args:any):any;
+  function storage_set(vrw:any, fielf:any, args:any):any;
+  function _URL(e:any):any;
+  function runtime_sendMessage(b:any, e:any):any;
+}

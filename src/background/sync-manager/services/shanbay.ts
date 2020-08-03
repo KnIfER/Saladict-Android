@@ -69,8 +69,8 @@ export class Service extends SyncService<SyncConfig> {
       this.config = config
     }
 
-    browser.notifications.onClicked.addListener(this.handleLoginNotification)
-    browser.notifications.onButtonClicked.addListener(this.handleLoginNotification)
+    if(browser.isPlugin)browser.notifications.onClicked.addListener(this.handleLoginNotification)
+    if(browser.isPlugin)browser.notifications.onButtonClicked.addListener(this.handleLoginNotification)
   }
 
   async init () {
@@ -163,9 +163,9 @@ export class Service extends SyncService<SyncConfig> {
   notifyError (locale: keyof typeof locales, text: string) {
     const { langCode } = window.appConfig
 
-    browser.notifications.create({
+    if(browser.isPlugin)browser.notifications.create({
       type: 'basic',
-      iconUrl: browser.runtime.getURL(`static/icon-128.png`),
+      iconUrl: browser._URL(`static/icon-128.png`),
       title: `Saladict Sync Service ${Service.title[langCode]}`,
       message: `「${text}」${locales[locale][langCode]}`,
       eventTime: Date.now() + 10000,
@@ -176,9 +176,9 @@ export class Service extends SyncService<SyncConfig> {
   notifyLogin () {
     const { langCode } = window.appConfig
 
-    browser.notifications.create('shanbay-login', {
+    if(browser.isPlugin)browser.notifications.create('shanbay-login', {
       type: 'basic',
-      iconUrl: browser.runtime.getURL(`static/icon-128.png`),
+      iconUrl: browser._URL(`static/icon-128.png`),
       title: `Saladict Sync Service ${Service.title[langCode]}`,
       message: locales.loginCheckFailed[langCode],
       buttons: [{ title: locales.open[langCode] }],

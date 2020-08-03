@@ -93,19 +93,21 @@ message.addListener((data, sender: browser.runtime.MessageSender) => {
   }
 })
 
-browser.windows.onRemoved.addListener(async winID => {
-  if (winID === qsPanelID) {
-    qsPanelID = false
-    ;(await browser.tabs.query({})).forEach(tab => {
-      if (tab.id && tab.windowId !== winID) {
-        message.send<MsgQSPanelIDChanged>(tab.id, {
-          type: MsgType.QSPanelIDChanged,
-          flag: qsPanelID !== false,
-        })
-      }
-    })
-  }
-})
+if(browser.isPlugin){
+  browser.windows.onRemoved.addListener(async winID => {
+    if (winID === qsPanelID) {
+      qsPanelID = false
+      ;(await browser.tabs.query({})).forEach(tab => {
+        if (tab.id && tab.windowId !== winID) {
+          message.send<MsgQSPanelIDChanged>(tab.id, {
+            type: MsgType.QSPanelIDChanged,
+            flag: qsPanelID !== false,
+          })
+        }
+      })
+    }
+  })
+}
 
 export async function openQSPanel (): Promise<void> {
   if (qsPanelID !== false) {
@@ -168,7 +170,7 @@ export async function openQSPanel (): Promise<void> {
     }
   }
 
-  let url = browser.runtime.getURL('quick-search.html')
+  let url = browser._URL('quick-search.html')
   if (window.appConfig.tripleCtrlPreload === 'selection') {
     const tab = (await browser.tabs.query({ active: true, lastFocusedWindow: true }))[0]
     if (tab && tab.id) {

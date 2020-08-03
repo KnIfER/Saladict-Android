@@ -17,7 +17,7 @@ process.on('unhandledRejection', err => {
 })
 
 // Browser targets
-const browsers = ['chrome', 'firefox']
+const browsers = ['chrome']//, 'firefox'
 
 // Ensure environment variables are read.
 require('../config/env')

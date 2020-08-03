@@ -342,7 +342,7 @@ export function searchText (
 
     if (!isNoSearchHistoryPage &&
         state.config.searhHistory &&
-        (!browser.extension.inIncognitoContext || state.config.searhHistoryInco) &&
+        (!false/* browser.extension.inIncognitoContext */ || state.config.searhHistoryInco) &&
         !isSameSelection(state.dictionaries.searchHistory[0], info)
     ) {
       saveWord('history', info)

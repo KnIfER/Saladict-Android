@@ -117,7 +117,7 @@ export interface PostMsgSelection extends Omit<MsgSelection, 'type'> {
 export interface MsgOpenUrl {
   readonly type: MsgType.OpenURL
   readonly url: string
-  /** use browser.runtime.getURL? */
+  /** use browser._URL? */
   readonly self?: boolean
 }
 
