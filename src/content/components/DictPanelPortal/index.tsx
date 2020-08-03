@@ -17,7 +17,7 @@ const isStandalonePage = isSaladictPopupPage || isSaladictQuickSearchPage
 
 const getDictStyles = memoizeOne((selected: DictID[]): string => {
   return selected.map(
-    id => `<link rel="stylesheet" href="${browser.runtime.getURL(`/dicts/${isSaladictInternalPage ? 'internal/' : ''}${id}.css`)}" />`
+    id => `<link rel="stylesheet" href="${browser._URL(`/dicts/${isSaladictInternalPage ? 'internal/' : ''}${id}.css`)}" />`
   ).join('\n')
 })
 
@@ -83,7 +83,7 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
       // this will reduce the initial loading time
       this.frameHead = (
         meta +
-        `<link type="text/css" rel="stylesheet" href="${browser.runtime.getURL('panel.css')}" />\n`
+        `<link type="text/css" rel="stylesheet" href="${browser._URL('panel.css')}" />\n`
       )
     } else {
       const styles = Array.from(document.querySelectorAll<HTMLLinkElement>('link[rel="stylesheet"]'))
@@ -261,7 +261,7 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
         const $link = doc.createElement('link')
         $link.type = 'text/css'
         $link.rel = 'stylesheet'
-        $link.href = browser.runtime.getURL('panel.css')
+        $link.href = browser._URL('panel.css')
         doc.head.appendChild($link)
       }
     }

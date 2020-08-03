@@ -24,7 +24,7 @@ describe('Context Menus', () => {
   beforeAll(() => {
     // Order matters. Do not change.
     browser.flush()
-    browser.i18n.getUILanguage.returns('en')
+    browser._Language.returns('en')
     jest.resetModules()
     require('@/background/context-menus')
     configManager = require('@/_helpers/config-manager')
@@ -93,7 +93,7 @@ describe('Context Menus', () => {
     beforeEach(() => {
       // Order matters. Do not change.
       browser.flush()
-      browser.i18n.getUILanguage.returns('en')
+      browser._Language.returns('en')
       config = specialConfig()
       browser.contextMenus.removeAll.callsFake(() => Promise.resolve())
       browser.contextMenus.create.callsFake((_, cb) => cb())

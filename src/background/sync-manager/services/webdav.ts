@@ -56,14 +56,14 @@ export class Service extends SyncService<SyncConfig, SyncMeta> {
   async startInterval () {
     this.meta = await getMeta(Service.id) || this.meta
 
-    browser.alarms.onAlarm.addListener(this.handleSyncAlarm.bind(this))
+    if(browser.isPlugin) browser.alarms.onAlarm.addListener(this.handleSyncAlarm.bind(this))
 
     createSyncConfigStream<SyncConfig>(Service.id)
       .subscribe(this.handleInterval.bind(this))
   }
 
   async handleInterval (newConfig: SyncConfig | null) {
-    await browser.alarms.clear('webdav')
+    if(browser.isPlugin)await browser.alarms.clear('webdav')
 
     if (!newConfig) {
       this.config = Service.getDefaultConfig()
@@ -84,7 +84,7 @@ export class Service extends SyncService<SyncConfig, SyncMeta> {
         nextInterval = now + 1000
       }
       await storage.local.set({ 'webdavInterval': nextInterval })
-      browser.alarms.create('webdav', {
+      if(browser.isPlugin)browser.alarms.create('webdav', {
         when: nextInterval,
         periodInMinutes: duration,
       })

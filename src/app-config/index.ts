@@ -6,7 +6,7 @@ import { SupportedLangs } from '@/_helpers/lang-check'
 
 export type LangCode = 'zh-CN' | 'zh-TW' | 'en'
 
-const langUI = (browser.i18n.getUILanguage() || 'en')
+const langUI = (browser._Language() || 'en')
 const langCode: LangCode = /^zh-CN|zh-TW|en$/.test(langUI)
   ? langUI === 'zh-HK'
     ? 'zh-TW'

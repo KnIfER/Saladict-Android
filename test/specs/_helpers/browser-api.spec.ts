@@ -609,10 +609,10 @@ describe('Browser API Wapper', () => {
     })
     it('Concat extension base url', () => {
       browser.tabs.query.returns(Promise.resolve([]))
-      browser.runtime.getURL.returns('test')
+      browser._URL.returns('test')
       return openURL(url, true)
         .then(() => {
-          expect(browser.runtime.getURL.calledWith(url)).toBeTruthy()
+          expect(browser._URL.calledWith(url)).toBeTruthy()
           expect(browser.tabs.create.calledWith({ url: 'test' })).toBeTruthy()
         })
     })
