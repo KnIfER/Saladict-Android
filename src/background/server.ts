@@ -262,7 +262,7 @@ function playAudio (src: string, sender: browser.runtime.MessageSender) {
 }
 
 function playWaveform (src: string, sender: browser.runtime.MessageSender) {
-  if (sender.tab && sender.tab.id) {
+  if (sender && sender.tab && sender.tab.id) {
     return message.send<MsgWaveFormPlay>(
       sender.tab.id,
       {

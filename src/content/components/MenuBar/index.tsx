@@ -367,6 +367,7 @@ export default class MenuBar extends React.PureComponent<MenuBarProps, MenuBarSt
   }
 
   renderProfilePanel = () => {
+    //console.log('renderProfilePanel!!!', this.props);
     const {
       t,
       profiles,

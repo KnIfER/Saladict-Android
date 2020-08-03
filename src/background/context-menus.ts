@@ -187,10 +187,11 @@ async function setContextMenus (
   contextMenus: ContextMenusConfig,
   t: TranslationFunction
 ): Promise<void> {
-  if (!browser.extension.inIncognitoContext) {
+  if(!browser.isPlugin) return;
+  //if (!browser.extension.inIncognitoContext) {
     // In 'split' incognito mode, this will also remove the items on normal mode windows
     await browser.contextMenus.removeAll()
-  }
+  //}
   const ctx: browser.contextMenus.ContextType[] = [
     'audio', 'editable', 'frame', 'image', 'link', 'selection', 'page', 'video'
   ]

@@ -133,6 +133,7 @@ export default class Waveform extends React.PureComponent<{}, WaveformState> {
   }
 
   togglePlay = () => {
+    console.log('togglePlay!!!')
     this.state.isPlaying ? this.pause() : this.play()
   }
 
@@ -232,10 +233,14 @@ export default class Waveform extends React.PureComponent<{}, WaveformState> {
   }
 
   async componentDidMount () {
-    const pageId = await message.self.initClient()
-
+    console.log('MsgWaveFormPlay componentDidMount！！！');
+    const pageId = (await message.self.initClient());
+    console.log('pageid?', pageId, message);
+    
     message.addListener<MsgWaveFormPlay>(MsgType.PlayWaveform, message => {
-      if (pageId !== message.tabId) { return }
+      console.log('MsgWaveFormPlay 进来？');
+      if (browser.isPlugin && pageId !== message.tabId) { return }
+      console.log('MsgWaveFormPlay 进来了！！！');
 
       if (message.src) {
         this.src = message.src
