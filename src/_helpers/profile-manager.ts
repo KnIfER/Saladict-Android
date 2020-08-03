@@ -115,6 +115,7 @@ export async function initProfiles (): Promise<Profile> {
 }
 
 export async function resetAllProfiles () {
+  console.log('resetAllProfiles!!!');
   const { profileIDList } = await storage.sync.get<{
     profileIDList: ProfileIDList
   }>('profileIDList')
@@ -142,6 +143,7 @@ export async function getProfile (id: string): Promise<Profile | undefined> {
 export async function updateProfile (profile: Profile): Promise<void> {
   if (process.env.DEV_BUILD) {
     const profileIDList = await getProfileIDList()
+    console.log('in updateProfile::', profileIDList);
     if (!profileIDList.find(item => item.id === profile.id)) {
       console.error(`Update Profile: profile ${profile.id} does not exist`)
     }

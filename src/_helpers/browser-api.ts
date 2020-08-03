@@ -212,9 +212,11 @@ function storageAddListener (this: StorageThisThree, ...args): void {
   let listener = listeners.get(listenerKey)
   if (!listener) {
     listener = (changes, areaName) => {
-      if ((this.__storageArea__ === 'all' || areaName === this.__storageArea__) &&
+      //console.log('变化否', changes, areaName, cb);
+      if (!browser.isPlugin||(this.__storageArea__ === 'all' || areaName === this.__storageArea__) &&
           (!key || key in changes)
       ) {
+        //console.log('进来了');
         cb(changes, areaName)
       }
     }
@@ -331,7 +333,7 @@ function messageAddListener (this: MessageThis, ...args): void {
   if (!listener) {
     listener = (
       (message, sender) => {
-        if (message && (this.__self__ ? window.pageId === message.__pageId__ : !message.__pageId__)) {
+        if (message && (!browser.isPlugin || (this.__self__ ? window.pageId === message.__pageId__ : !message.__pageId__))) {
           if (messageType == null || message.type === messageType) {
             return cb(message, sender)
           }
@@ -391,6 +393,10 @@ function messageCreateStream (this: MessageThis, messageType = MsgType.Null) {
  * This method is called on the first sendMessage
  */
 function initClient (): Promise<typeof window.pageId> {
+  console.log('————!!!initClient!!!————', window.document)
+  if(!browser.isPlugin){
+    window.pageId = 'background page'
+  }
   if (window.pageId === undefined) {
     return browser.runtime_sendMessage(browser,{ type: MsgType.__PageInfo__ })
       .then(({ pageId, faviconURL, pageTitle, pageURL }) => {
@@ -410,10 +416,13 @@ function initClient (): Promise<typeof window.pageId> {
  * This method should be invoked in background script
  */
 function initServer (): void {
+  console.log('————!!!initServer!!!————')
+
   window.pageId = 'background page'
   const selfMsgTester = /^\[\[(.+)\]\]$/
 
   browser.runtime_onMessage_addListener(browser, (message, sender) => {
+    console.log('runtime_onMessage_addListener', message, sender)
     if (!message) { return }
 
     if (message.type === MsgType.__PageInfo__) {
@@ -424,7 +433,7 @@ function initServer (): void {
     if (selfMsg) {
       const msgType = Number(selfMsg[1])
       message.type = isNaN(msgType) ? selfMsg[1] : msgType as MsgType
-      const tabId = sender.tab && sender.tab.id
+      const tabId = browser.isPlugin?(sender.tab && sender.tab.id):0;
       if (tabId) {
         return messageSend(tabId, message)
       } else {
