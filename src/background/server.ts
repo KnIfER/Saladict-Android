@@ -324,10 +324,10 @@ function getClipboard (): Promise<string> {
   if (process.env.NODE_ENV === 'development') {
     return Promise.resolve('clipboard content')
   } else {
-    let el = document.getElementById('saladict-paste') as HTMLTextAreaElement | null
+    let el = document.getElementById('alloydict-paste') as HTMLTextAreaElement | null
     if (!el) {
       el = document.createElement('textarea')
-      el.id = 'saladict-paste'
+      el.id = 'alloydict-paste'
       document.body.appendChild(el)
     }
     el.value = ''

@@ -219,7 +219,7 @@
     "zh_CN": "自定义查词面板样式"
   },
   "opt_dict_panel_custom_css_help": {
-    "zh_CN": "为查词面板添加自定义 CSS 。请使用 .saladict-DictPanel 作为根。"
+    "zh_CN": "为查词面板添加自定义 CSS 。请使用 .alloydict-DictPanel 作为根。"
   },
   "opt_dict_panel_font_size": {
     "zh_CN": "词典内容字体大小"

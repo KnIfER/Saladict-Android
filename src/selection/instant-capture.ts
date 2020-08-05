@@ -57,7 +57,7 @@ combineLatest(
     const { instant } = config[
       withQSPanel
         ? 'qsPanelMode'
-        : (isNoSelectionPage || window.name === 'saladict-dictpanel')
+        : (isNoSelectionPage || window.name === 'alloydict-dictpanel')
           ? 'panelMode'
           : isPinned ? 'pinMode' : 'mode'
     ]
@@ -69,7 +69,7 @@ combineLatest(
   }),
   distinctUntilChanged((oldVal, newVal) => oldVal[0] === newVal[0] && oldVal[1] === newVal[1]),
   switchMap(([instant, insCapDelay, config]) => {
-    if (!instant || window.name === 'saladict-wordeditor' || isBlacklisted(config)) {
+    if (!instant || window.name === 'alloydict-wordeditor' || isBlacklisted(config)) {
       return of(null)
     }
     return merge(
@@ -112,7 +112,7 @@ combineLatest(
       mouseX: event.clientX,
       mouseY: event.clientY,
       instant: true,
-      self: isSaladictInternalPage ? isInPanelOnInternalPage(event) : window.name === 'saladict-dictpanel',
+      self: isSaladictInternalPage ? isInPanelOnInternalPage(event) : window.name === 'alloydict-dictpanel',
       selectionInfo: selection.getSelectionInfo(partialSelInfo),
     })
   }
