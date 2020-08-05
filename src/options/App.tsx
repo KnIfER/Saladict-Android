@@ -86,9 +86,6 @@ export class OptionsMain extends React.Component<
               <Menu.Item key='DictPanel'><Icon type='profile' /> {t('nav_DictPanel')}</Menu.Item>
               <Menu.Item key='SearchModes'><Icon type='select' /> {t('nav_SearchModes')}</Menu.Item>
               <Menu.Item key='Dictionaries'><Icon type='book' /> {t('nav_Dictionaries')}</Menu.Item>
-              <Menu.Item key='PDF'><Icon type='file-pdf' /> {t('nav_PDF')}</Menu.Item>
-              <Menu.Item key='ContextMenus'><Icon type='database' /> {t('nav_ContextMenus')}</Menu.Item>
-              <Menu.Item key='Popup'><Icon type='layout' /> {t('nav_Popup')}</Menu.Item>
               <Menu.Item key='QuickSearch'><Icon type='flag' /> {t('nav_QuickSearch')}</Menu.Item>
               <Menu.Item key='BlackWhiteList'><Icon type='exception' /> {t('nav_BlackWhiteList')}</Menu.Item>
               <Menu.Item key='ImportExport'><Icon type='swap' /> {t('nav_ImportExport')}</Menu.Item>

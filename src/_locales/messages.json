@@ -31,20 +31,5 @@
     "message": {
       "zh_CN": "打开独立词典窗口"
       }
-  },
-  "command_open_google": {
-    "message": {
-      "zh_CN": "对当前页启用谷歌翻译"
-      }
-  },
-  "command_open_youdao": {
-    "message": {
-      "zh_CN": "对当前页启用有道翻译"
-      }
-  },
-  "command_open_pdf": {
-    "message": {
-      "zh_CN": "在 Saladict 中浏览此 PDF"
-      }
   }
 }

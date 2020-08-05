@@ -5,7 +5,6 @@ import checkUpdate from '@/_helpers/check-update'
 import { updateConfig, initConfig } from '@/_helpers/config-manager'
 import { initProfiles } from '@/_helpers/profile-manager'
 import { MsgType, MsgQueryPanelState } from '@/typings/message'
-import { openPDF, openGoogle, openYoudao } from './context-menus'
 import { openQSPanel } from './server'
 import './types'
 
@@ -16,7 +15,7 @@ interface UpdateData {
 }
 if(browser.isPlugin) {
   browser.runtime.onInstalled.addListener(onInstalled)
-  browser.runtime.onStartup.addListener(onStartup)
+  //browser.runtime.onStartup.addListener(onStartup)
   browser.notifications.onClicked.addListener(
     genClickListener('https://github.com/crimx/ext-saladict/releases')
   )
@@ -30,6 +29,12 @@ if(browser.isPlugin) {
 } else {
   onInstalled({ reason:'',previousVersion:'' });
 }
+
+browser.browserAction.onClicked.addListener(function(){
+  console.log('111');
+  openQSPanel ();
+  console.log('222');
+});
 
 function onCommand (command: string) {
   switch (command) {
@@ -56,18 +61,6 @@ function onCommand (command: string) {
           updateConfig(window.appConfig)
         })
       })
-      break
-    case 'open-quick-search':
-      openQSPanel()
-      break
-    case 'open-google':
-      openGoogle()
-      break
-    case 'open-youdao':
-      openYoudao()
-      break
-    case 'open-pdf':
-      openPDF()
       break
   }
 }

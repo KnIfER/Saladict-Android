@@ -42,9 +42,6 @@ export function mergeConfig (oldConfig: AppConfig, baseConfig?: AppConfig): AppC
   mergeNumber('panelMaxHeightRatio')
   mergeString('panelCSS')
   mergeNumber('fontSize')
-  mergeBoolean('pdfSniff')
-  merge('pdfWhiltelist', val => Array.isArray(val))
-  merge('pdfBlacklist', val => Array.isArray(val))
   mergeBoolean('searhHistory')
   mergeBoolean('searhHistoryInco')
   mergeBoolean('newWordSound')
@@ -125,28 +122,6 @@ export function mergeConfig (oldConfig: AppConfig, baseConfig?: AppConfig): AppC
   merge('whiltelist', val => Array.isArray(val))
   merge('blacklist', val => Array.isArray(val))
 
-  mergeSelectedContextMenus('contextMenus')
-
-  forEach(oldConfig.contextMenus.all, (dict, id) => {
-    if (typeof dict === 'string') {
-      // default menus
-      if (base.contextMenus.all[id]) {
-        mergeString(`contextMenus.all.${id}`)
-      }
-    } else {
-      // custom menus
-      mergeString(`contextMenus.all.${id}.name`)
-      mergeString(`contextMenus.all.${id}.url`)
-    }
-  })
-
-  // post-merge patch start
-  oldVersion = oldConfig.version
-
-  if (oldVersion <= 10) {
-    oldVersion = 11
-    base.contextMenus.selected.unshift('view_as_pdf')
-  }
   if (oldVersion <= 11) {
     oldVersion = 12
     base.blacklist.push(
@@ -168,21 +143,6 @@ export function mergeConfig (oldConfig: AppConfig, baseConfig?: AppConfig): AppC
   // post-merge patch end
 
   return base
-
-  function mergeSelectedContextMenus (path: string): void {
-    const selected = get(oldConfig, [path, 'selected'])
-    if (Array.isArray(selected)) {
-      if (selected.length === 0) {
-        set(base, [path, 'selected'], [])
-      } else {
-        const allContextMenus = get(base, [path, 'all'])
-        const arr = selected.filter(id => allContextMenus[id])
-        if (arr.length > 0) {
-          set(base, [path, 'selected'], arr)
-        }
-      }
-    }
-  }
 
   function mergeNumber (path: string): void {
     return merge(path, isNumber)
