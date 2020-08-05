@@ -44,13 +44,13 @@ export const validMouseup$$ = merge(
 ).pipe(
   withLatestFrom(config$$),
   filter(([{ target }, config]) => {
-    if (window.name === 'saladict-wordeditor') {
+    if (window.name === 'alloydict-wordeditor') {
       return false
     }
 
     if (target) {
       if (typeof target['className'] === 'string' &&
-          (target['className'] as string).includes('saladict-')
+          (target['className'] as string).includes('alloydict-')
       ) {
         return false
       }

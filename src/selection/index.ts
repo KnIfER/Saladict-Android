@@ -61,7 +61,7 @@ message.addListener(msg => {
               instant: true,
               self: isSaladictInternalPage
                 ? isInPanelOnInternalPage(lastMousedownEvent)
-                : window.name === 'saladict-dictpanel',
+                : window.name === 'alloydict-dictpanel',
               selectionInfo: selection.getSelectionInfo({ text }),
             })
             isSent = true
@@ -103,7 +103,7 @@ isKeyPressed(isEscapeKey).subscribe(
   () => message.self.send({ type: MsgType.EscapeKey })
 )
 
-if (!window.name.startsWith('saladict-') && !isSaladictOptionsPage) {
+if (!window.name.startsWith('alloydict-') && !isSaladictOptionsPage) {
   /**
    * Pressing ctrl/command key more than three times within 500ms
    * trigers TripleCtrl
@@ -134,7 +134,7 @@ validMouseup$$.pipe(
     if (config.noTypeField && isTypeField(lastMousedownEvent)) {
       const isDictPanel = isSaladictInternalPage
         ? isInPanelOnInternalPage(lastMousedownEvent)
-        : window.name === 'saladict-dictpanel'
+        : window.name === 'alloydict-dictpanel'
       sendEmptyMessage(isDictPanel)
       return false
     }
@@ -167,7 +167,7 @@ validMouseup$$.pipe(
 ).subscribe(([[[event, config], lastMousedownEvent, clickPeriodCount], partialSelInfo]) => {
   const isDictPanel = isSaladictInternalPage
     ? isInPanelOnInternalPage(lastMousedownEvent)
-    : window.name === 'saladict-dictpanel'
+    : window.name === 'alloydict-dictpanel'
 
   if (checkSupportedLangs(config.language, partialSelInfo.text)) {
     sendMessage({

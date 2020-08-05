@@ -73,8 +73,8 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
 
   constructor (props: DictPanelPortalProps) {
     super(props)
-    this.el.className = 'saladict-DIV'
-    this.dragBg.className = 'saladict-DragBg'
+    this.el.className = 'alloydict-DIV'
+    this.dragBg.className = 'alloydict-DragBg'
 
     const meta = '<meta name="viewport" content="width=device-width, initial-scale=1">\n'
 
@@ -292,7 +292,7 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
       isDragging,
     } = this.state
 
-    const frameClassName = 'saladict-DictPanel'
+    const frameClassName = 'alloydict-DictPanel'
       + (isAnimation ? ' isAnimate' : '')
       + (isDragging ? ' isDragging' : '')
 
@@ -309,7 +309,7 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
         : <PortalFrame
             className={frameClassName}
             bodyClassName='panel-FrameBody'
-            name='saladict-dictpanel'
+            name='alloydict-dictpanel'
             frameBorder='0'
             head={`${this.frameHead}\n${getDictStyles(dictsConfig.selected)}\n<style>${panelCSS}</style>\n`}
             frameDidMount={this.frameDidMount}
@@ -339,7 +339,7 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
 
     return ReactDOM.createPortal(
       <div
-        className='saladict-DIV'
+        className='alloydict-DIV'
         onMouseMoveCapture={!isSaladictInternalPage && isDragging ? this.handleFrameMouseMove : undefined}
         onTouchMoveCapture={!isSaladictInternalPage && isDragging ? this.handleFrameTouchMove : undefined}
         onMouseUpCapture={isDragging ? this.handleDragEnd : undefined}
@@ -347,7 +347,7 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
         onKeyUp={this.handleFrameKeyUp}
       >
         <CSSTransition
-          classNames='saladict-DictPanel'
+          classNames='alloydict-DictPanel'
           in={shouldPanelShow}
           timeout={500}
           mountOnEnter={true}

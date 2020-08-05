@@ -136,7 +136,7 @@ export function isInPanelOnInternalPage (
     const target = event.target
     if (target['classList']) {
       for (let el = target as Element | null; el; el = el.parentElement) {
-        if (el.classList.contains('saladict-DictPanel')) {
+        if (el.classList.contains('alloydict-DictPanel')) {
           return true
         }
       }
