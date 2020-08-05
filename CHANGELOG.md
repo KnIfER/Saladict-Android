@@ -1,6 +1,6 @@
 # Change Log
 
-All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+此项目的所有显着更改将记录在此文件中。 有关提交准则，请参见 [standard-version](https://github.com/conventional-changelog/standard-version)
 
 <a name="AlloyDict"></a>
 ## [伟大的开端：AlloyDict (2020-08-06)](https://github.com/name/repo-name/compare/v6.33.0...v6.33.1) 
