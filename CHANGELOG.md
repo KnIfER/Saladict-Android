@@ -3,7 +3,7 @@
 此项目的所有显着更改将记录在此文件中。 有关提交准则，请参见 [standard-version](https://github.com/conventional-changelog/standard-version)
 
 <a name="AlloyDict"></a>
-## [伟大的开端：AlloyDict (2020-08-06)](https://github.com/name/repo-name/compare/v6.33.0...v6.33.1) 
+## [伟大的开端：代号 AlloyDict (2020-08-06)](https://github.com/name/repo-name/compare/v6.33.0...v6.33.1) 
 ### 准备工作
 * **简化编译:**  编译时不生成.map文件。
 * **暂时删除:**  削减界面文字翻译，只保留简体中文。移除繁简转换2000多行的charMap。
