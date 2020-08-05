@@ -37,6 +37,8 @@ dotenvFiles.forEach(dotenvFile => {
   }
 })
 
+process.env.GENERATE_SOURCEMAP=false;
+
 // We support resolving modules according to `NODE_PATH`.
 // This lets you use absolute paths in imports inside large monorepos:
 // https://github.com/facebookincubator/create-react-app/issues/253.
