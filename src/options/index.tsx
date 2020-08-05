@@ -22,7 +22,6 @@ import i18nLoader from '@/_helpers/i18n'
 import commonLocles from '@/_locales/common'
 import dictsLocles from '@/_locales/dicts'
 import optionsLocles from '@/_locales/options'
-import contextLocles from '@/_locales/context'
 import profileLocles from '@/_locales/config-profiles'
 
 import { LocaleProvider as ProviderAntdLocale, message } from 'antd'
@@ -40,7 +39,6 @@ const i18n = i18nLoader({
   common: commonLocles,
   opt: optionsLocles,
   dict: dictsLocles,
-  ctx: contextLocles,
   profile: profileLocles,
 }, 'opt')
 

@@ -71,19 +71,20 @@ measureFileSizesBeforeBuild(paths.appBuild)
             ' to the line before.\n'
         )
       } else {
-        console.log(chalk.green('Compiled successfully.\n'))
+        console.log(chalk.green('Compiled successfully\n！！！！！！！！！！！！\n！！！！！！！！！！！！\n！！！！！！！！！！！！\n'))
+        console.log(chalk.yellow('done.\n'))
       }
 
-      console.log('File sizes after gzip:\n')
-      printFileSizesAfterBuild(
-        stats,
-        previousFileSizes,
-        // only show the basename
-        '[browser]/', // paths.appBuild,
-        WARN_AFTER_BUNDLE_GZIP_SIZE,
-        WARN_AFTER_CHUNK_GZIP_SIZE
-      )
-      console.log()
+      // console.log('File sizes after gzip:\n')
+      // printFileSizesAfterBuild(
+      //   stats,
+      //   previousFileSizes,
+      //   // only show the basename
+      //   '[browser]/', // paths.appBuild,
+      //   WARN_AFTER_BUNDLE_GZIP_SIZE,
+      //   WARN_AFTER_CHUNK_GZIP_SIZE
+      // )
+      // console.log()
     },
     err => {
       console.log(chalk.red('Failed to compile.\n'))

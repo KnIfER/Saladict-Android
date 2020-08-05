@@ -92,9 +92,6 @@
   "nav_BlackWhiteList": {
     "zh_CN": "黑白名单"
   },
-  "nav_ContextMenus": {
-    "zh_CN": "右键菜单"
-  },
   "nav_Dictionaries": {
     "zh_CN": "词典设置"
   },
@@ -109,12 +106,6 @@
   },
   "nav_Notebook": {
     "zh_CN": "单词管理"
-  },
-  "nav_PDF": {
-    "zh_CN": "PDF 设置"
-  },
-  "nav_Popup": {
-    "zh_CN": "右上弹框"
   },
   "nav_Profiles": {
     "zh_CN": "情景模式"
@@ -283,15 +274,6 @@
   },
   "opt_no_type_field_help": {
     "zh_CN": "开启后，本扩展会自动识别输入框以及常见编辑器，如 CodeMirror、ACE 和 Monaco。"
-  },
-  "opt_pdf_blackwhitelist_help": {
-    "zh_CN": "黑名单匹配的 PDF 链接将不会跳转到 Saladict 打开。"
-  },
-  "opt_pdf_sniff": {
-    "zh_CN": "默认用本扩展浏览 PDF"
-  },
-  "opt_pdf_sniff_help": {
-    "zh_CN": "开启后所有 PDF 链接将自动跳转到本扩展打开（包括本地，如果在扩展管理页面勾选了允许）。"
   },
   "opt_profile_change": {
     "zh_CN": "此选项会因「情景模式」而改变。"

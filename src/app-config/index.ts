@@ -1,6 +1,5 @@
 import { DeepReadonly } from '@/typings/helpers'
 import { getALlDicts } from './dicts'
-import { getAllContextMenus } from './context-menus'
 import { MtaAutoUnfold as _MtaAutoUnfold, _getDefaultProfile } from './profiles'
 import { SupportedLangs } from '@/_helpers/lang-check'
 
@@ -73,16 +72,6 @@ function _getDefaultConfig () {
 
     /** panel font-size */
     fontSize: 13,
-
-    /** sniff pdf request */
-    pdfSniff: true,
-    /** URLs, [regexp.source, match_pattern] */
-    pdfWhitelist: [] as [string, string][],
-    /** URLs, [regexp.source, match_pattern] */
-    // tslint:disable-next-line: no-unnecessary-type-assertion
-    pdfBlacklist: [
-      ['^(http|https)://[^/]*?cnki\.net(/.*)?$', '*://*.cnki.net/*'],
-    ] as [string, string][],
 
     /** track search history */
     searhHistory: false,
@@ -284,17 +273,6 @@ function _getDefaultConfig () {
     // tslint:disable-next-line: no-unnecessary-type-assertion
     blacklist: [
       ['^https://stackedit\.io(/.*)?$', 'https://stackedit.io/*']
-    ] as [string, string][],
-
-    contextMenus: {
-      selected: [
-        'view_as_pdf',
-        'google_translate',
-        'google_search',
-        'google_page_translate',
-        'youdao_page_translate'
-      ],
-      all: getAllContextMenus()
-    }
+    ] as [string, string][]
   }
 }

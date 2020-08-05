@@ -10,7 +10,7 @@ import { Form, Input, Modal, Button, Icon } from 'antd'
 export type MatchPatternModalProps = FormComponentProps & {
   t: TranslationFunction
   config: AppConfig
-  area: '' | 'pdfWhitelist' | 'pdfBlacklist' | 'whitelist' | 'blacklist'
+  area: '' | 'whitelist' | 'blacklist'
   onClose: () => void
 }
 

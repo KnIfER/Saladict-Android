@@ -34,15 +34,6 @@ window.browser = {
       removeListener () {},
     }
   },
-  contextMenus: {
-    onClicked: {
-      addListener () {},
-      hasListener () {},
-      removeListener () {},
-    },
-    removeAll () { return Promise.resolve() },
-    create () { return Promise.resolve() },
-  },
   cookies: {
     set: () => Promise.resolve()
   },

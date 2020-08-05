@@ -47,15 +47,6 @@
     },
     "open-quick-search": {
       "description": "__MSG_command_open_quick_search__"
-    },
-    "open-pdf": {
-      "description": "__MSG_command_open_pdf__"
-    },
-    "open-youdao": {
-      "description": "__MSG_command_open_youdao__"
-    },
-    "open-google": {
-      "description": "__MSG_command_open_google__"
     }
   },
 
@@ -86,15 +77,13 @@
     "default_icon": {
       "19": "static/icon-19.png",
       "38": "static/icon-38.png"
-    },
-    "default_popup": "popup.html"
+    }
   },
 
   "permissions": [
     "<all_urls>",
     "alarms",
     "clipboardRead",
-    "contextMenus",
     "cookies",
     "notifications",
     "storage",
