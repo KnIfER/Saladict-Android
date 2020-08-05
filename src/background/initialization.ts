@@ -28,7 +28,7 @@ if(browser.isPlugin) {
   }
   browser.commands.onCommand.addListener(onCommand)
 } else {
-  onInstalled({reason:'',previousVersion:''});
+  onInstalled({ reason:'',previousVersion:'' });
 }
 
 function onCommand (command: string) {
@@ -140,7 +140,7 @@ function onStartup (): void {
       if (!process.env.DEV_BUILD && lastCheckUpdate && isExtTainted) {
         const diff = Math.floor((today - lastCheckUpdate) / 24 / 60 / 60 / 1000)
         if (diff > 0 && diff % 7 === 0) {
-          if(browser.isPlugin)browser.notifications.create('update', {
+          if(browser.isPlugin) browser.notifications.create('update', {
             type: 'basic',
             iconUrl: browser._URL(`static/icon-128.png`),
             title: decodeURI('%E6%B2%99%E6%8B%89%E6%9F%A5%E8%AF%8D'),
@@ -208,7 +208,7 @@ function showNews (data: UpdateData) {
         options.silent = true
       }
 
-      if(browser.isPlugin)browser.notifications.create('oninstall', options)
+      if(browser.isPlugin) browser.notifications.create('oninstall', options)
     }
   }, 5000)
 }

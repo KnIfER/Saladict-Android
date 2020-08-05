@@ -11,7 +11,6 @@ import { filter } from 'rxjs/operators/filter'
 
 import { MsgType } from '@/typings/message'
 
-
 /* --------------------------------------- *\
  * #Types
 \* --------------------------------------- */
@@ -74,8 +73,6 @@ const storageListeners: Map<StorageListenerCb, Map<string, StorageListenerCb>> =
  * #Exports
 \* --------------------------------------- */
 
-
-
 export const storage = {
   sync: {
     clear: storageClear,
@@ -135,7 +132,7 @@ export const message = {
  * Open a url on new tab or highlight a existing tab if already opened
  */
 export async function openURL (url: string, self?: boolean): Promise<void> {
-  console.log('openURL???', url);
+  console.log('openURL???', url)
   if (self) { url = browser._URL(url) }
   const tabs = await browser.tabs.query({ url })
   // Only Chrome supports tab.highlight for now
@@ -178,13 +175,13 @@ function storageRemove (this: StorageThisTwo, keys: string | string[]): Promise<
 function storageGet<T = any> (key?: string | string[] | null): Promise<Partial<T>>
 function storageGet<T extends Object> (key: T | any): Promise<Partial<T>>
 function storageGet<T = any> (this: StorageThisTwo, ...args): Promise<Partial<T>> {
-  //return browser.storage[this.__storageArea__].get(...args)
+  // return browser.storage[this.__storageArea__].get(...args)
   return browser.storage_get(browser, this.__storageArea__, args)
 }
 
 function storageSet (keys: any): Promise<void>
 function storageSet (this: StorageThisTwo, keys: any): Promise<void> {
-  //return browser.storage[this.__storageArea__].set(keys)
+  // return browser.storage[this.__storageArea__].set(keys)
   return browser.storage_set(browser, this.__storageArea__, keys)
 }
 
@@ -212,11 +209,11 @@ function storageAddListener (this: StorageThisThree, ...args): void {
   let listener = listeners.get(listenerKey)
   if (!listener) {
     listener = (changes, areaName) => {
-      //console.log('变化否', changes, areaName, cb);
+      // console.log('变化否', changes, areaName, cb);
       if (!browser.isPlugin||(this.__storageArea__ === 'all' || areaName === this.__storageArea__) &&
           (!key || key in changes)
       ) {
-        //console.log('进来了');
+        // console.log('进来了');
         cb(changes, areaName)
       }
     }
