@@ -1,5 +1,5 @@
 :root:root:root:root:root {
-  .saladict-DictPanel {
+  .alloydict-DictPanel {
     @extend %reset-important;
     position: fixed !important;
     z-index: $global-zindex-dictpanel !important;
@@ -8,7 +8,7 @@
     overscroll-behavior: contain !important;
   }
 
-  .saladict-DragBg {
+  .alloydict-DragBg {
     @extend %reset-important;
     position: fixed !important;
     z-index: $global-zindex-dictpanel-dragbg !important;
@@ -18,19 +18,19 @@
     height: 100% !important;
   }
 
-  .saladict-DictPanel-enter {
+  .alloydict-DictPanel-enter {
     opacity: 0 !important;
   }
 
-  .saladict-DictPanel-enter-active {
+  .alloydict-DictPanel-enter-active {
     opacity: 1 !important;
   }
 
-  .saladict-DictPanel-exit {
+  .alloydict-DictPanel-exit {
     opacity: 1 !important;
   }
 
-  .saladict-DictPanel-exit-active {
+  .alloydict-DictPanel-exit-active {
     opacity: 0 !important;
   }
 
@@ -38,7 +38,7 @@
       States
   \*-----------------------------------------------*/
   .isAnimate {
-    &.saladict-DictPanel {
+    &.alloydict-DictPanel {
       will-change: width, height, left, top !important;
       transition: opacity 0.2s,
                   width 0.4s, height 0.4s,
@@ -51,8 +51,8 @@
       }
     }
 
-    &.saladict-DictPanel-enter,
-    &.saladict-DictPanel-entering {
+    &.alloydict-DictPanel-enter,
+    &.alloydict-DictPanel-entering {
       will-change: opacity, width, height, left, top !important;
       transition: opacity 0.2s,
                   width 0.4s, height 0.4s,
@@ -61,7 +61,7 @@
                   !important;
     }
 
-    &.saladict-DictPanel-exit {
+    &.alloydict-DictPanel-exit {
       will-change: opacity, width, height;
       transition: opacity 0.1s, width 0.4s, height 0.4s !important;
     }

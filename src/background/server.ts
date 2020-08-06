@@ -328,6 +328,7 @@ function getClipboard (): Promise<string> {
     if (!el) {
       el = document.createElement('textarea')
       el.id = 'alloydict-paste'
+      el.style.setProperty('display','none')
       document.body.appendChild(el)
     }
     el.value = ''

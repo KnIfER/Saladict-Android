@@ -4,7 +4,8 @@
   position: relative;
   height: 30px;
   font-size: 14px;
-  background-color: rgb(92, 175, 158);
+  //background-color: rgb(92, 175, 158);
+  background: linear-gradient(to top, #7f91f5, #4f7eff);
 }
 
 .panel-MenuBar_Btn {
@@ -175,6 +176,11 @@
   border-radius: 10px;
   background: #fff;
   box-shadow: 3px 4px 31px -8px rgba(0,0,0,0.8);
+
+  &.More {
+    left:-86%;
+    padding: 8px 28px;
+  }
 }
 
 .panel-MenuBar_Profile {
@@ -192,6 +198,10 @@
 
   &.isActive::before {
     color: #333;
+  }
+
+  &.More::before {
+    display: none;
   }
 }
 

@@ -20,6 +20,7 @@ interface Window {
 
 declare namespace browser{
   var isPlugin:boolean;
+  var isMobile:boolean;
   function _Language():string;
   function runtime_onMessage_addListener(vrw:any, listener:any):any;
   function storage_onChanged_addListener(vrw:any, listener:any):any;

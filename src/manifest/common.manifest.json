@@ -28,7 +28,8 @@
     {
       "js": ["content.js"],
       "css": ["content.css"],
-      "matches": ["<all_urls>"]
+      "matches": ["<all_urls>"],
+      "exclude_matches": ["http://127.0.0.1/base/*"]
     },
     {
       "js": ["selection.js"],

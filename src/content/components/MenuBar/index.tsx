@@ -14,6 +14,7 @@ import { filter } from 'rxjs/operators/filter'
 import { switchMap } from 'rxjs/operators/switchMap'
 import { fromPromise } from 'rxjs/observable/fromPromise'
 import { empty } from 'rxjs/observable/empty'
+import { BROWSER } from 'ua-parser-js'
 
 const isSaladictOptionsPage = !!window.__SALADICT_OPTIONS_PAGE__
 const isSaladictPopupPage = !!window.__SALADICT_POPUP_PAGE__
@@ -56,6 +57,7 @@ type MenuBarState = {
     explain: string,
     entry: string
   }>
+  isShowMoreMenu: boolean
 }
 
 export default class MenuBar extends React.PureComponent<MenuBarProps, MenuBarState> {
@@ -71,6 +73,7 @@ export default class MenuBar extends React.PureComponent<MenuBarProps, MenuBarSt
     isShowProfilePanel: false,
     isShowSuggestPanel: false,
     suggests: [],
+    isShowMoreMenu: false,
   }
 
   searchText = (text?: string) => {
@@ -186,6 +189,14 @@ export default class MenuBar extends React.PureComponent<MenuBarProps, MenuBarSt
     this.setState({ isShowProfilePanel: false })
   }
 
+  showMoreMenu = () => {
+    this.setState({ isShowMoreMenu: true })
+  }
+
+  hideMoreMenu = () => {
+    this.setState({ isShowMoreMenu: false })
+  }
+
   handleProfileItemClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     updateActiveProfileID(e.currentTarget.id)
     setTimeout(() => {
@@ -272,7 +283,7 @@ export default class MenuBar extends React.PureComponent<MenuBarProps, MenuBarSt
   }
 
   /** close panel, even when pinned */
-  handleIconCloseClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+  handleIconMenuClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.currentTarget.blur()
     this.props.closePanel()
   }
@@ -403,6 +414,32 @@ export default class MenuBar extends React.PureComponent<MenuBarProps, MenuBarSt
     )
   }
 
+  renderMenuPanel = () => {
+    //console.log('renderProfilePanel!!!', this.props);
+    return (
+      <ul
+        className='panel-MenuBar_Profiles More'
+        onMouseEnter={this.showMoreMenu}
+        onMouseLeave={this.hideMoreMenu}
+      >
+        {[{id:"1",name:"全部展开"}, {id:"2",name:"全部半折"}, {id:"3",name:"全部折叠"}, {id:"4",name:"打开"}].map(({ id, name }) => {
+          return (
+            <li key={id}
+             className={'panel-MenuBar_Profile More'}
+            >
+              <button
+               id={id}
+               className='panel-MenuBar_ProfileBtn'
+               onClick={this.handleProfileItemClick}
+               onKeyUp={this.handleProfileItemonKeyUp}
+              >{name}</button>
+            </li>
+          )
+        })}
+      </ul>
+    )
+  }
+
   render () {
     const {
       t,
@@ -418,6 +455,7 @@ export default class MenuBar extends React.PureComponent<MenuBarProps, MenuBarSt
     const {
       isShowProfilePanel,
       isShowSuggestPanel,
+      isShowMoreMenu,
     } = this.state
 
     return (
@@ -485,13 +523,12 @@ export default class MenuBar extends React.PureComponent<MenuBarProps, MenuBarSt
         />
 
         <div className='panel-MenuBar_SettingsWrapper'>
-          <button className='panel-MenuBar_Btn'
-            onClick={this.showProfilePanel}
+          <button className='panel-MenuBar_Btn' onClick={this.showProfilePanel}
             // handleIconSettingsClick
             onKeyUp={this.handleIconSettingsKeyUp}
-            // onMouseOver={this.showProfilePanel}
+            onMouseOver={this.showProfilePanel}
             onMouseOut={this.hideProfilePanel}
-            disabled={isSaladictOptionsPage}
+            //disabled={isSaladictOptionsPage}
           >
             <svg
               className='panel-MenuBar_Icon'
@@ -509,9 +546,8 @@ export default class MenuBar extends React.PureComponent<MenuBarProps, MenuBarSt
           >{this.renderProfilePanel}</CSSTransition>
         </div>
 
-        <button className='panel-MenuBar_Btn'
+        <button className='panel-MenuBar_Btn' onClick={this.handleIconFavClick}
           onMouseDown={this.handleIconFavMouseDown}
-          onClick={this.handleIconFavClick}
           disabled={!searchBox.text || isSaladictOptionsPage}
         >
           <svg
@@ -547,31 +583,30 @@ export default class MenuBar extends React.PureComponent<MenuBarProps, MenuBarSt
         </button>
         */}
 
-        <button className='panel-MenuBar_Btn'
-          onClick={this.handleIconPinClick}
-          disabled={isSaladictOptionsPage || isStandalonePage}
-        >
-          <svg
-            className='panel-MenuBar_Icon'
-            width='30' height='30' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 53.011 53.011'
-          >
-            <title>{t('tipPinPanel')}</title>
-            <path className={`panel-MenuBar_Icon-pin ${isPinned ? 'isActive' : ''}`} d='M52.963 21.297c-.068-.33-.297-.603-.61-.727-8.573-3.416-16.172-.665-18.36.288L19.113 8.2C19.634 3.632 17.17.508 17.06.372c-.18-.22-.442-.356-.725-.372-.282-.006-.56.09-.76.292L.32 15.546c-.202.2-.308.48-.29.765.015.285.152.55.375.727 2.775 2.202 6.35 2.167 7.726 2.055l12.722 14.953c-.868 2.23-3.52 10.27-.307 18.337.124.313.397.54.727.61.067.013.135.02.202.02.263 0 .518-.104.707-.293l14.57-14.57 13.57 13.57c.196.194.452.292.708.292s.512-.098.707-.293c.39-.392.39-1.024 0-1.415l-13.57-13.57 14.527-14.528c.237-.238.34-.58.27-.91zm-17.65 15.458L21.89 50.18c-2.437-8.005.993-15.827 1.03-15.91.158-.352.1-.764-.15-1.058L9.31 17.39c-.19-.225-.473-.352-.764-.352-.05 0-.103.004-.154.013-.036.007-3.173.473-5.794-.954l13.5-13.5c.604 1.156 1.39 3.26.964 5.848-.058.346.07.697.338.924l15.785 13.43c.31.262.748.31 1.105.128.077-.04 7.378-3.695 15.87-1.017L35.313 36.754z'/>
-          </svg>
-        </button>
 
-        <button className='panel-MenuBar_Btn'
-          onClick={this.handleIconCloseClick}
-          disabled={isSaladictOptionsPage || isStandalonePage}
-        >
-          <svg
-            className='panel-MenuBar_Icon'
-            width='30' height='30' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 31.112 31.112'
+        <div className='panel-MenuBar_SettingsWrapper'>
+          <button className='panel-MenuBar_Btn' onClick={this.showMoreMenu}
+            // handleOverflowMenuClick
+            onMouseOver={this.showMoreMenu}
+            onMouseOut={this.hideMoreMenu}
+            //disabled={isSaladictOptionsPage || isStandalonePage}
           >
-            <title>{t('tipClosePanel')}</title>
-            <path d='M31.112 1.414L29.698 0 15.556 14.142 1.414 0 0 1.414l14.142 14.142L0 29.698l1.414 1.414L15.556 16.97l14.142 14.142 1.414-1.414L16.97 15.556'/>
-          </svg>
-        </button>
+            <svg
+              className='panel-MenuBar_Icon'
+              width='30' height='30' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'
+            >
+              <title>{t('tipOpenSettings')}</title>
+              <path d='M12,7.6c1.21,0 2.2,-0.99 2.2,-2.2s-0.99,-2.2 -2.2,-2.2c-1.21,0 -2.2,0.99 -2.2,2.2S10.79,7.6 12,7.6zM12,9.8c-1.21,0 -2.2,0.99 -2.2,2.2s0.99,2.2 2.2,2.2c1.21,0 2.2,-0.99 2.2,-2.2S13.21,9.8 12,9.8zM12,16.4c-1.21,0 -2.2,0.99 -2.2,2.2s0.99,2.2 2.2,2.2c1.21,0 2.2,-0.99 2.2,-2.2S13.21,16.4 12,16.4z'/>
+            </svg>
+          </button>
+          <CSSTransition
+           classNames='panel-MenuBar_ProfilePanel'
+           in={isShowMoreMenu}
+           timeout={100}
+           unmountOnExit={true}
+          >{this.renderMenuPanel}</CSSTransition>
+        </div>
+        
       </header>
     )
   }
