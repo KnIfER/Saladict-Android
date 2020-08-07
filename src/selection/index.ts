@@ -6,22 +6,14 @@ import { MsgType, PostMsgType, PostMsgSelection } from '@/typings/message'
 import { lastMousedown$$, validMouseup$$, clickPeriodCount$ } from './mouse-events'
 import {
   sendMessage,
-  sendEmptyMessage,
-  isQSKey,
   isEscapeKey,
   isKeyPressed,
   isInPanelOnInternalPage,
-  config$$,
 } from './helper'
-import './instant-capture'
 
-import { merge } from 'rxjs/observable/merge'
 import { map } from 'rxjs/operators/map'
 import { take } from 'rxjs/operators/take'
-import { share } from 'rxjs/operators/share'
-import { buffer } from 'rxjs/operators/buffer'
 import { filter } from 'rxjs/operators/filter'
-import { debounceTime } from 'rxjs/operators/debounceTime'
 import { withLatestFrom } from 'rxjs/operators/withLatestFrom'
 import { distinctUntilChanged } from 'rxjs/operators/distinctUntilChanged'
 
@@ -101,66 +93,45 @@ isKeyPressed(isEscapeKey).subscribe(
   () => message.self.send({ type: MsgType.EscapeKey })
 )
 
-if (!window.name.startsWith('alloydict-') && !isSaladictOptionsPage) {
-  /**
-   * Pressing ctrl/command key more than three times within 500ms
-   * trigers TripleCtrl
-   */
-  const qsKeyPressed$$ = share<true>()(isKeyPressed(isQSKey))
-
-  qsKeyPressed$$.pipe(
-    buffer(merge(
-      debounceTime(500)(qsKeyPressed$$), // collect after 0.5s
-      isKeyPressed(e => !isQSKey(e)), // other key pressed
-    )),
-    filter(group => group.length >= 3),
-    withLatestFrom(config$$),
-  )/* .subscribe(args => {
-    if (args[1].tripleCtrl) {
-      message.self.send({ type: MsgType.TripleCtrl })
-    }
-  }) */
-}
-
-validMouseup$$.pipe(
-  withLatestFrom(lastMousedown$$, clickPeriodCount$),
-  filter(([[event, config], lastMousedownEvent]) => {
-    if (isNoSelectionPage && !isInPanelOnInternalPage(lastMousedownEvent)) {
-      return false
-    }
-
-    //输入框检查在这里！  if (config.noTypeField && isTypeField(lastMousedownEvent)) {
-    return true
-  }),
-  map(args => {
-    return [
-      args,
-      {
-        text: selection.getSelectionText(),
-        context: selection.getSelectionSentence(),
-      },
-    ] as [typeof args, { text: string, context: string }]
-  }),
-  distinctUntilChanged((oldVal, newVal) => {
-    const clickPeriodCount = newVal[0][2]
-    // (Ignore this rule if it is a double click.)
-    // Same selection. This could be caused by other widget on the page
-    // that uses preventDefault which stops selection being cleared when clicked.
-    // Ignore it so that the panel won't follow.
-    return Boolean(
-      clickPeriodCount < 2 &&
-      oldVal[1].text &&
-      oldVal[1].text === newVal[1].text &&
-      oldVal[1].context &&
-      oldVal[1].context === newVal[1].context
-    )
-  })
-).subscribe(([[[event, config], lastMousedownEvent, clickPeriodCount], partialSelInfo]) => {
-  const isDictPanel = isSaladictInternalPage
-    ? isInPanelOnInternalPage(lastMousedownEvent)
-    : window.name === 'alloydict-dictpanel'
-  //检查语言在这呢! checkSupportedLangs(config.language, partialSelInfo.text)
-  if (true) {
+if(browser.isPlugin) {
+  validMouseup$$.pipe(
+    withLatestFrom(lastMousedown$$, clickPeriodCount$),
+    filter(([/* [event, config] */, lastMousedownEvent]) => {
+      if (isNoSelectionPage && !isInPanelOnInternalPage(lastMousedownEvent)) {
+        return false
+      }
+  
+      //输入框检查在这里！  if (config.noTypeField && isTypeField(lastMousedownEvent)) {
+      return true
+    }),
+    map(args => {
+      return [
+        args,
+        {
+          text: selection.getSelectionText(),
+          context: selection.getSelectionSentence(),
+        },
+      ] as [typeof args, { text: string, context: string }]
+    }),
+    distinctUntilChanged((oldVal, newVal) => {
+      const clickPeriodCount = newVal[0][2]
+      // (Ignore this rule if it is a double click.)
+      // Same selection. This could be caused by other widget on the page
+      // that uses preventDefault which stops selection being cleared when clicked.
+      // Ignore it so that the panel won't follow.
+      return Boolean(
+        clickPeriodCount < 2 &&
+        oldVal[1].text &&
+        oldVal[1].text === newVal[1].text &&
+        oldVal[1].context &&
+        oldVal[1].context === newVal[1].context
+      )
+    })
+  ).subscribe(([[[event], lastMousedownEvent, clickPeriodCount], partialSelInfo]) => {
+    const isDictPanel = isSaladictInternalPage
+      ? isInPanelOnInternalPage(lastMousedownEvent)
+      : window.name === 'alloydict-dictpanel'
+    //检查语言在这呢! checkSupportedLangs(config.language, partialSelInfo.text)
     sendMessage({
       mouseX: event.clientX,
       mouseY: event.clientY,
@@ -171,5 +142,5 @@ validMouseup$$.pipe(
       self: isDictPanel,
       selectionInfo: selection.getSelectionInfo(partialSelInfo)
     })
-  }
-})
+  })
+}

@@ -14,7 +14,7 @@ import { share } from 'rxjs/operators/share'
 import { filter } from 'rxjs/operators/filter'
 import { distinctUntilChanged } from 'rxjs/operators/distinctUntilChanged'
 
-const isMac = /mac/i.test(navigator.platform)
+//const isMac = /mac/i.test(navigator.platform)
 
 export const config$$ = share<AppConfig>()(createConfigStream())
 
@@ -78,14 +78,6 @@ export function sendEmptyMessage (isDictPanel: boolean) {
 
   message.self.send(msg)
 }
-
-/**
- * Is quick search key pressed(command on mac, ctrl on others)
- */
-export function isQSKey (evt: KeyboardEvent): boolean {
-  return isMac ? evt.key === 'Meta' : evt.key === 'Control'
-}
-
 /**
  * Is esc button pressed
  */
