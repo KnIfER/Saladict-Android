@@ -208,6 +208,10 @@ export default class MenuBar extends React.PureComponent<MenuBarProps, MenuBarSt
     }, 100)
   }
 
+  handlMoreMenuItemClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    browser.runtime_toggleFoldUnFold(parseInt(e.currentTarget.id))
+  }
+
   handleProfileItemonKeyUp = (e: React.KeyboardEvent<HTMLButtonElement>) => {
     if (e.key === 'Escape') {
       e.stopPropagation()
@@ -422,7 +426,7 @@ export default class MenuBar extends React.PureComponent<MenuBarProps, MenuBarSt
         onMouseEnter={this.showMoreMenu}
         onMouseLeave={this.hideMoreMenu}
       >
-        {[{id:"1",name:"全部展开"}, {id:"2",name:"全部半折"}, {id:"3",name:"全部折叠"}, {id:"4",name:"打开"}].map(({ id, name }) => {
+        {[{id:"2",name:"全部展开"}, {id:"1",name:"全部半折"}, {id:"0",name:"全部折叠"}, {id:"3",name:"设置…"}].map(({ id, name }) => {
           return (
             <li key={id}
              className={'panel-MenuBar_Profile More'}
@@ -430,7 +434,7 @@ export default class MenuBar extends React.PureComponent<MenuBarProps, MenuBarSt
               <button
                id={id}
                className='panel-MenuBar_ProfileBtn'
-               onClick={this.handleProfileItemClick}
+               onClick={this.handlMoreMenuItemClick}
                onKeyUp={this.handleProfileItemonKeyUp}
               >{name}</button>
             </li>

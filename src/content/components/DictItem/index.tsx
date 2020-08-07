@@ -39,6 +39,7 @@ export default class DictItem extends React.PureComponent<DictItemProps, DictIte
   bodyRef = React.createRef<HTMLDivElement>()
   prevItemHeight = 30
   initStyle = { height: 30, opacity: 0 }
+  p
 
   state = {
     /** same as pros */
@@ -104,12 +105,16 @@ export default class DictItem extends React.PureComponent<DictItemProps, DictIte
     return null
   }
 
-  toggleFolding = () => {
+  toggleFolding = (force:any) => {
     if (this.props.searchStatus === SearchStatus.Searching) {
       return
     }
-
-    if (this.state.isUnfold) {
+    var fold=this.state.isUnfold;
+    var isAutoClick='number'==typeof force;
+    if(isAutoClick) {
+      fold=force==0;
+    }
+    if (fold) {
       this.setState({ isUnfold: false, visibleHeight: 10 })
     } else {
       if (this.props.searchResult) {
@@ -121,7 +126,10 @@ export default class DictItem extends React.PureComponent<DictItemProps, DictIte
         } else {
           this.setState({ isUnfold: true, hasError: false })
         }
-      } else {
+        if(force===2) {
+          this.showFull(null);
+        }
+      } else if(!isAutoClick){
         this.props.searchText({ id: this.props.id })
       }
     }
@@ -136,7 +144,9 @@ export default class DictItem extends React.PureComponent<DictItemProps, DictIte
     } else {
       this.setState(state => ({ visibleHeight: state.offsetHeight }))
     }
-    e.currentTarget.blur()
+    if(e) {
+      e.currentTarget.blur()
+    }
   }
 
   handleDictItemClick = (e: React.MouseEvent<HTMLElement>) => {
@@ -210,6 +220,7 @@ export default class DictItem extends React.PureComponent<DictItemProps, DictIte
   }
 
   componentDidMount () {
+    this.p.rct=this
     this.props.updateItemHeight(
       this.props.id,
       this.state.visibleHeight + 20,
@@ -245,8 +256,8 @@ export default class DictItem extends React.PureComponent<DictItemProps, DictIte
     } = this.state
 
     return (
-      <section className='panel-DictItem'
-        onClick={this.handleDictItemClick}
+      <section className='panel-DictItem' onClick={this.handleDictItemClick}
+        ref={(dom) => this.p = dom}
       >
         <header className='panel-DictItem_Header' onClick={this.toggleFolding}>
           <img className='panel-DictItem_Logo' src={require('@/components/dictionaries/' + id + '/favicon.png')} alt='dict logo' />

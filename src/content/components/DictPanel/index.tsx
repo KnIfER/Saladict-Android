@@ -254,6 +254,13 @@ export class DictPanel extends React.Component<DictPanelProps & { t: Translation
           closePanel,
         })}
         <main className='panel-DictContainer' ref={this.ContainerRef}>
+          <button className='panel-DrawerBtn' onClick={this.toggleMtaBox}>
+            <svg width='10' height='10' viewBox='0 0 59.414 59.414' xmlns='http://www.w3.org/2000/svg'
+             className={'panel-DrawerBtn_Arrow' + (mtaBoxHeight > 0 ? ' isActive' : '')}
+            >
+              <path d='M58 14.146L29.707 42.44 1.414 14.145 0 15.56 29.707 45.27 59.414 15.56' />
+            </svg>
+          </button>
           <div className='panel-MtaBox' style={{ height: mtaBoxHeight }}>
             <CSSTransition
               classNames='panel-MtaBoxTrans'
@@ -265,14 +272,7 @@ export class DictPanel extends React.Component<DictPanelProps & { t: Translation
               {this.renderMtaBox}
             </CSSTransition>
           </div>
-          <button className='panel-DrawerBtn' onClick={this.toggleMtaBox}>
-            <svg width='10' height='10' viewBox='0 0 59.414 59.414' xmlns='http://www.w3.org/2000/svg'
-             className={'panel-DrawerBtn_Arrow' + (mtaBoxHeight > 0 ? ' isActive' : '')}
-            >
-              <path d='M58 14.146L29.707 42.44 1.414 14.145 0 15.56 29.707 45.27 59.414 15.56' />
-            </svg>
-          </button>
-          <div>
+          <div id='all'>
             {activeDicts.map(id => {
               const dictInfo = dictsInfo[id]
               return React.createElement(DictItem, {
@@ -293,6 +293,16 @@ export class DictPanel extends React.Component<DictPanelProps & { t: Translation
         </main>
         {withWaveform &&
           <>
+          <div className='panel-AudioBox' style={{ height: audioBoxShow ? 165 : 0 }}>
+            {shouldLoadAudioBox // x-frame-options: SAMEORIGIN
+              ? <iframe
+                  className='panel-AudioBoxFrame'
+                  src={browser._URL('/audio-control.html')}
+                  sandbox='allow-same-origin allow-scripts'
+                />
+              : null
+            }
+          </div>
             <button className='panel-DrawerBtn' onClick={this.toggleAudioBox}>
               <svg width='10' height='10' viewBox='0 0 59.414 59.414' xmlns='http://www.w3.org/2000/svg'
                 className={'panel-DrawerBtn_Arrow' + (audioBoxShow ? ' isActive' : '')}
@@ -300,16 +310,6 @@ export class DictPanel extends React.Component<DictPanelProps & { t: Translation
                 <path d='M 58 45.269 L 29.707 16.975 L 1.414 45.27 L 0 43.855 L 29.707 14.145 L 59.414 43.855' />
               </svg>
             </button>
-            <div className='panel-AudioBox' style={{ height: audioBoxShow ? 165 : 0 }}>
-              {shouldLoadAudioBox // x-frame-options: SAMEORIGIN
-                ? <iframe
-                    className='panel-AudioBoxFrame'
-                    src={browser._URL('/audio-control.html')}
-                    sandbox='allow-same-origin allow-scripts'
-                  />
-                : null
-              }
-            </div>
           </>
         }
       </div>
