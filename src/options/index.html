@@ -4,20 +4,19 @@
     <meta charset="utf-8">
     <title>Saladict Options</title>
     <script src="./static/browser-polyfill.min.js"></script>
-		<style>
-			body{width:1024px!important;}
-			.ant-form-item-label label:after {
-				display: inline-flex !important;
-			}
-			.ant-form-item-label {
-				text-align: right !important;
-				line-height: 39.9999px !important;
-			}
-		</style>
+	<style>
+		body{width:1024px!important;}
+		.ant-form-item-label label:after {
+			display: inline-flex !important;
+		}
+		.ant-form-item-label {
+			text-align: right !important;
+			line-height: 39.9999px !important;
+		}
+	</style>
     <script>
-			var lastNode=document.currentScript.previousElementSibling;
-			lastNode.disabled=!(browser.isMobile||document.documentElement.clientWidth<500);
-		</script>
+      browser.closeStyle()
+    </script>
   </head>
   <body>
     <div id="root"></div>
