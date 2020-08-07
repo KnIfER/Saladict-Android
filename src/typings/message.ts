@@ -27,9 +27,6 @@ export const enum MsgType {
   /** Mouse down, selection maybe empty */
   Selection,
 
-  /** Ctrl/Command has been hit 3 times */
-  TripleCtrl,
-
   /** Escape key is pressed */
   EscapeKey,
 

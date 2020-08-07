@@ -6,7 +6,6 @@ import memoizeOne from 'memoize-one'
 import DictPanel, { DictPanelDispatchers, DictPanelProps } from '../DictPanel'
 import { Omit } from '@/typings/helpers'
 import PortalFrame from '@/components/PortalFrame'
-import { injectAnalytics } from '@/_helpers/analytics'
 
 const isSaladictInternalPage = !!window.__SALADICT_INTERNAL_PAGE__
 const isSaladictPopupPage = !!window.__SALADICT_POPUP_PAGE__
@@ -148,10 +147,6 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
       this.frame.contentWindow.document.title = isSaladictQuickSearchPage
         ? 'Saladict Quick Search Panel'
         : 'Saladict Panel'
-      injectAnalytics(
-        isSaladictQuickSearchPage ? '/qspanel' : '/panel',
-        this.frame.contentWindow,
-      )
     }
   }
 
@@ -225,10 +220,6 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
     const {
       shouldPanelShow,
     } = this.props
-
-    const {
-      isDragging,
-    } = this.state
 
     if (shouldPanelShow && !this.isMount) {
       this.mountEL()

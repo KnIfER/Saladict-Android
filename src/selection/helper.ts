@@ -105,26 +105,7 @@ export function isKeyPressed (keySelectior: (e: KeyboardEvent) => boolean): Obse
   )
 }
 
-export function isTypeField (event: MouseEvent | TouchEvent | null): boolean {
-  if (event && event.target) {
-    const target = event.target
-    if (target['tagName'] === 'INPUT' || target['tagName'] === 'TEXTAREA') {
-      return true
-    }
-
-    const editorTester = /CodeMirror|ace_editor|monaco-editor/
-    // Popular code editors CodeMirror, ACE and Monaco
-    for (let el = target as Element | null; el; el = el.parentElement) {
-      // With CodeMirror the `pre.CodeMirror-line` somehow got detached when the event
-      // triggerd. So el will never reach the root `.CodeMirror`.
-      if (editorTester.test(el.className)) {
-        return true
-      }
-    }
-  }
-
-  return false
-}
+// export function isTypeField
 
 /**
  * Is inside dict panel on a Saladict internal page

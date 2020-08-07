@@ -3,7 +3,7 @@ import '@/wordeditor'
 import '../../selection'
 import '../index'
 
-import { AppConfigMutable, TCDirection } from '@/app-config'
+import { AppConfigMutable } from '@/app-config'
 import { updateConfig, initConfig } from '@/_helpers/config-manager'
 import { updateProfile, initProfiles } from '@/_helpers/profile-manager'
 import { ProfileMutable } from '@/app-config/profiles'
@@ -18,20 +18,6 @@ Promise.all([initConfig(), initProfiles()])
 
   profile.dicts.selected = ['bing', 'google', 'guoyu', 'cobuild', 'liangan']
   profile.dicts.all.guoyu.selectionLang.english = false
-
-  config.mode.double = true
-  // config.mode.icon = false
-  // config.animation = false
-  config.panelMode.double = true
-  config.panelMode.holding.ctrl = true
-  config.panelMode.holding.shift = true
-  config.panelMode.instant.enable = true
-  config.tripleCtrlAuto = true
-  config.tripleCtrlLocation = TCDirection.right
-  config.tripleCtrlPreload = 'selection'
-  config.pinMode.direct = false
-  config.pinMode.double = true
-  config.pinMode.holding.ctrl = false
 
   setTimeout(() => {
     document.body.style.display = 'block'

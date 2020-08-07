@@ -80,6 +80,7 @@ export function newSelection (selection: MsgSelection): Action<ActionType.NEW_SE
 
 /** Listen to selection change and update selection */
 export function startUpAction (): DispatcherThunk {
+  //console.log('selectionStartUp');
   return dispatch => {
     message.self.addListener<MsgSelection>(
       MsgType.Selection,

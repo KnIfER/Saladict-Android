@@ -3,14 +3,13 @@ import React from 'react'
 export interface SaladBowlProps {
   readonly mouseOnBowl: (flag: boolean) => any
   readonly isAnimation: boolean
-  readonly bowlHover: boolean
 }
 
 export default class SaladBowl extends React.PureComponent<SaladBowlProps> {
   mouseOnBowlTimeout: any
 
   handleMouseEnter = () => {
-    if (this.props.bowlHover) {
+    if (1/* this.props.bowlHover */) {
       this.mouseOnBowlTimeout = setTimeout(() => {
         this.props.mouseOnBowl(true)
       }, 500)
@@ -27,12 +26,12 @@ export default class SaladBowl extends React.PureComponent<SaladBowlProps> {
   }
 
   render () {
-    const { isAnimation, bowlHover } = this.props
+    const { isAnimation} = this.props
     return (
       <div className={(
         'saladict-SaladBowl' +
         (isAnimation ? ' isAnimate' : '') +
-        (bowlHover ? ' bowlHover' : '')
+        (/* bowlHover ?  */' bowlHover')
       )}
         role='img'
         key='saladict-SaladBowl'

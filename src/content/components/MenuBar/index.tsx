@@ -34,10 +34,8 @@ export interface MenuBarProps extends MenuBarDispatchers {
   readonly t: TranslationFunction
   readonly activeConfigID: string
   readonly profiles: Array<{ id: string, name: string }>
-  readonly tripleCtrlPreload: AppConfig['tripleCtrlPreload']
   readonly isFav: boolean
   readonly isPinned: boolean
-  readonly isTripleCtrl: boolean
   readonly searchHistory: SelectionInfo[]
   readonly activeDicts: string[]
   readonly searchBox: {
@@ -322,7 +320,7 @@ export default class MenuBar extends React.PureComponent<MenuBarProps, MenuBarSt
     })
 
     if (!this.props.isShowMtaBox &&
-        (isStandalonePage || this.props.isTripleCtrl || this.props.activeDicts.length <= 0) &&
+        (isStandalonePage || this.props.activeDicts.length <= 0) &&
         this.inputRef.current
     ) {
       this.inputRef.current.focus()
@@ -334,8 +332,8 @@ export default class MenuBar extends React.PureComponent<MenuBarProps, MenuBarSt
     if (prevProps.searchBox.text !== this.props.searchBox.text) {
       // ignore the first change from async clipboard pasting
       if (isStandalonePage &&
-          !this.textChangedOnStandalonePage &&
-          this.props.tripleCtrlPreload === 'clipboard'
+          !this.textChangedOnStandalonePage /* &&
+          this.props.tripleCtrlPreload === 'clipboard' */
       ) {
         this.textChangedOnStandalonePage = true
       } else {
@@ -345,11 +343,11 @@ export default class MenuBar extends React.PureComponent<MenuBarProps, MenuBarSt
 
     if (!this.props.isShowMtaBox &&
         !this.state.isShowSuggestPanel &&
-        (isStandalonePage || this.props.isTripleCtrl || this.props.activeDicts.length <= 0) &&
+        (isStandalonePage /* || this.props.isTripleCtrl */ || this.props.activeDicts.length <= 0) &&
         this.inputRef.current
     ) {
-      this.inputRef.current.focus()
-      this.inputRef.current.select()
+      //this.inputRef.current.focus()
+      //this.inputRef.current.select()
     }
   }
 

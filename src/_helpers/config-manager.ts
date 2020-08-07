@@ -39,6 +39,7 @@ function inflate (config: undefined): undefined
 function inflate (config?: AppConfig | AppConfigCompressed): AppConfig | undefined
 function inflate (config?: AppConfig | AppConfigCompressed): AppConfig | undefined {
   if (config && config['v'] === 1) {
+    console.log('inflate', pako.inflate((config as AppConfigCompressed).d, { to: 'string' }));
     return JSON.parse(pako.inflate((config as AppConfigCompressed).d, { to: 'string' }))
   }
   return config as AppConfig

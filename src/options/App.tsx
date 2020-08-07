@@ -6,7 +6,6 @@ import { i18n } from 'i18next'
 import { Layout, Menu, Icon } from 'antd'
 import HeadInfo from './components/HeadInfo'
 import { getProfileName } from '@/_helpers/profile-manager'
-import { injectAnalytics } from '@/_helpers/analytics'
 
 const { Header, Content, Sider } = Layout
 
@@ -42,9 +41,9 @@ export class OptionsMain extends React.Component<
       '',
       newurl
     )
-    if (window.ga) {
-      window.ga('send', 'pageview', `/options/${key}`)
-    }
+    // if (window.ga) {
+    //   window.ga('send', 'pageview', `/options/${key}`)
+    // }
   }
 
   setTitle = (key: string) => {
@@ -54,8 +53,6 @@ export class OptionsMain extends React.Component<
 
   componentDidMount () {
     this.setTitle(this.state.selectedKey)
-
-    injectAnalytics(`/options/${this.state.selectedKey}`)
 
     window.addEventListener('popstate', e => {
       this.setState({ selectedKey: e.state.key || 'General' })
@@ -84,9 +81,7 @@ export class OptionsMain extends React.Component<
               <Menu.Item key='Notebook'><Icon type='tags' /> {t('nav_Notebook')}</Menu.Item>
               <Menu.Item key='Profiles'><Icon type='dashboard' /> {t('nav_Profiles')}</Menu.Item>
               <Menu.Item key='DictPanel'><Icon type='profile' /> {t('nav_DictPanel')}</Menu.Item>
-              <Menu.Item key='SearchModes'><Icon type='select' /> {t('nav_SearchModes')}</Menu.Item>
               <Menu.Item key='Dictionaries'><Icon type='book' /> {t('nav_Dictionaries')}</Menu.Item>
-              <Menu.Item key='QuickSearch'><Icon type='flag' /> {t('nav_QuickSearch')}</Menu.Item>
               <Menu.Item key='BlackWhiteList'><Icon type='exception' /> {t('nav_BlackWhiteList')}</Menu.Item>
               <Menu.Item key='ImportExport'><Icon type='swap' /> {t('nav_ImportExport')}</Menu.Item>
             </Menu>

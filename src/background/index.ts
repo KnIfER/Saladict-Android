@@ -2,7 +2,6 @@ import './server'
 import './initialization'
 import { getConfig, addConfigListener } from '@/_helpers/config-manager'
 import { getActiveProfile, addActiveProfileListener } from '@/_helpers/profile-manager'
-import { injectAnalytics } from '@/_helpers/analytics'
 import { startSyncServiceInterval } from './sync-manager'
 import './types'
 
@@ -16,13 +15,9 @@ startSyncServiceInterval()
 
 getConfig().then(async config => {
   window.appConfig = config
-  injectAnalytics('/background')
-
-  if(browser.isPlugin) browser.browserAction.setBadgeText({ text: window.appConfig.active ? '' : 'off' })
 
   addConfigListener(({ newConfig }) => {
     window.appConfig = newConfig
-    if(browser.isPlugin) browser.browserAction.setBadgeText({ text: newConfig.active ? '' : 'off' })
   })
 })
 

@@ -25,7 +25,6 @@ export const mapStateToProps = ({
     panelMaxHeightRatio: config.panelMaxHeightRatio,
     mtaAutoUnfold: config.mtaAutoUnfold,
     searchSuggests: config.searchSuggests,
-    tripleCtrlPreload: config.tripleCtrlPreload,
 
     activeConfigID: config.id,
     profiles: widget.profiles,
@@ -34,7 +33,6 @@ export const mapStateToProps = ({
 
     isFav: widget.isFav,
     isPinned: widget.isPinned,
-    isTripleCtrl: widget.isTripleCtrl,
     withWaveform: widget.withWaveform,
     shouldPanelShow: widget.shouldPanelShow,
     panelRect: widget.panelRect,

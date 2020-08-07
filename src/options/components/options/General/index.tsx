@@ -33,9 +33,7 @@ export class General extends React.Component<Props & FormComponentProps> {
       this.isReseted = false
       const { form, config } = this.props
       form.setFieldsValue({
-        'config#active': config.active,
         'config#animation': config.animation,
-        'config#analytics': config.analytics,
         'config#langCode': config.langCode,
       })
     }
@@ -50,35 +48,11 @@ export class General extends React.Component<Props & FormComponentProps> {
         <Button onClick={this.openShortcuts}>{t('opt_shortcuts')}</Button>
         <Form.Item
           {...formItemLayout}
-          label={t('opt_active')}
-          help={t('opt_app_active_help')}
-        >{
-          getFieldDecorator('config#active', {
-            initialValue: config.active,
-            valuePropName: 'checked',
-          })(
-            <Switch />
-          )
-        }</Form.Item>
-        <Form.Item
-          {...formItemLayout}
           label={t('opt_animation')}
           help={t('opt_animation_help')}
         >{
           getFieldDecorator('config#animation', {
             initialValue: config.animation,
-            valuePropName: 'checked',
-          })(
-            <Switch />
-          )
-        }</Form.Item>
-        <Form.Item
-          {...formItemLayout}
-          label={t('opt_analytics')}
-          help={t('opt_analytics_help')}
-        >{
-          getFieldDecorator('config#analytics', {
-            initialValue: config.analytics,
             valuePropName: 'checked',
           })(
             <Switch />

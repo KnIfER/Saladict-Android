@@ -1,4 +1,3 @@
-import { TCDirection } from '@/app-config'
 import { message, openURL } from '@/_helpers/browser-api'
 import { timeout, timer } from '@/_helpers/promise-more'
 import { getSuggests } from '@/_helpers/getSuggests'
@@ -115,83 +114,19 @@ export async function openQSPanel (): Promise<void> {
     return
   }
 
-  const { tripleCtrlLocation, panelWidth, tripleCtrlHeight, tripleCtrlSidebar } = window.appConfig
   let qsPanelLeft = 10
   let qsPanelTop = 30
   let qsPanelWidth = window.appConfig.panelWidth
-  let qsPanelHeight = window.appConfig.tripleCtrlHeight
-
-  if (tripleCtrlSidebar === 'left') {
-    qsPanelLeft = 0
-    qsPanelTop = 0
-    qsPanelHeight = window.screen.availHeight
-  } else if (tripleCtrlSidebar === 'right') {
-    qsPanelLeft = window.screen.availWidth - qsPanelWidth
-    qsPanelTop = 0
-    qsPanelHeight = window.screen.availHeight
-  } else {
-    switch (tripleCtrlLocation) {
-      case TCDirection.center:
-        qsPanelLeft = (screen.width - panelWidth) / 2
-        qsPanelTop = (screen.height - tripleCtrlHeight) / 2
-        break
-      case TCDirection.top:
-        qsPanelLeft = (screen.width - panelWidth) / 2
-        qsPanelTop = 30
-        break
-      case TCDirection.right:
-        qsPanelLeft = screen.width - panelWidth - 30
-        qsPanelTop = (screen.height - tripleCtrlHeight) / 2
-        break
-      case TCDirection.bottom:
-        qsPanelLeft = (screen.width - panelWidth) / 2
-        qsPanelTop = screen.height - 10
-        break
-      case TCDirection.left:
-        qsPanelLeft = 10
-        qsPanelTop = (screen.height - tripleCtrlHeight) / 2
-        break
-      case TCDirection.topLeft:
-        qsPanelLeft = 10
-        qsPanelTop = 30
-        break
-      case TCDirection.topRight:
-        qsPanelLeft = screen.width - panelWidth - 30
-        qsPanelTop = 30
-        break
-      case TCDirection.bottomLeft:
-        qsPanelLeft = 10
-        qsPanelTop = screen.height - 10
-        break
-      case TCDirection.bottomRight:
-        qsPanelLeft = screen.width - panelWidth - 30
-        qsPanelTop = screen.height - 10
-        break
-    }
-  }
 
   let url = browser._URL('quick-search.html')
-  if (window.appConfig.tripleCtrlPreload === 'selection') {
-    const tab = (await browser.tabs.query({ active: true, lastFocusedWindow: true }))[0]
-    if (tab && tab.id) {
-      const info = await message.send(tab.id, { type: MsgType.PreloadSelection })
-      try {
-        url += '?info=' + encodeURIComponent(JSON.stringify(info))
-      } catch (e) {
-        if (process.env.DEV_BUILD) {
-          console.warn(e)
-        }
-      }
-    }
-  }
 
-  lastQsMainWindow = tripleCtrlSidebar ? (await browser.windows.getLastFocused()) : void 0
+  lastQsMainWindow = void 0//tripleCtrlSidebar ? (await browser.windows.getLastFocused()) : void 0
 
   const qsPanelWin = await browser.windows.create({
     type: 'popup',
     url,
     width: qsPanelWidth,
-    height: qsPanelHeight,
+    height: 10000,
     left: Math.round(qsPanelLeft),
     top: Math.round(qsPanelTop),
   })
@@ -207,40 +142,10 @@ export async function openQSPanel (): Promise<void> {
         })
       }
     })
-
-    if (lastQsMainWindow && lastQsMainWindow.id) {
-      await browser.windows.update(lastQsMainWindow.id, {
-        state: 'normal',
-        top: 0,
-        left: tripleCtrlSidebar === 'left' ? qsPanelWidth : 1,
-        width: window.screen.availWidth - qsPanelWidth,
-        height: window.screen.availHeight,
-      })
-
-      // fix a chrome bugs by moving 1 extra pixal then to 0
-      if (tripleCtrlSidebar === 'right') {
-        await browser.windows.update(lastQsMainWindow.id, {
-          state: 'normal',
-          top: 0,
-          left: 0,
-          width: window.screen.availWidth - qsPanelWidth,
-          height: window.screen.availHeight,
-        })
-      }
-    }
   }
 }
 
 async function closeQSPanel (): Promise<void> {
-  if (window.appConfig.tripleCtrlSidebar && lastQsMainWindow && lastQsMainWindow.id) {
-    await browser.windows.update(lastQsMainWindow.id, {
-      state: lastQsMainWindow.state,
-      top: lastQsMainWindow.top,
-      left: lastQsMainWindow.left,
-      width: lastQsMainWindow.width,
-      height: lastQsMainWindow.height,
-    })
-  }
   lastQsMainWindow = void 0
 }
 

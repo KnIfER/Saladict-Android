@@ -1,10 +1,10 @@
 import * as recordManager from '@/_helpers/record-manager'
 import { StoreState, DispatcherThunk, Dispatcher } from './index'
-import { getDefaultConfig, TCDirection, DictID } from '@/app-config'
+import { getDefaultConfig, DictID } from '@/app-config'
 import { message } from '@/_helpers/browser-api'
 import { createProfileIDListStream } from '@/_helpers/profile-manager'
-import { searchText, restoreDicts, summonedPanelInit } from '@/content/redux/modules/dictionaries'
-import { SelectionInfo, getDefaultSelectionInfo } from '@/_helpers/selection'
+import { searchText, restoreDicts } from '@/content/redux/modules/dictionaries'
+import { SelectionInfo } from '@/_helpers/selection'
 import { Mutable } from '@/typings/helpers'
 import { translateCtx } from '@/_helpers/translateCtx'
 import {
@@ -33,7 +33,6 @@ const panelHeaderHeight = 30 + drawerBtnHeight // menu bar + multiline search bo
 export const enum ActionType {
   NEW_CONFIG = 'widget/NEW_CONFIG',
   RESTORE = 'widget/RESTORE',
-  TRIPLE_CTRL = 'widget/TRIPLE_CTRL',
   TEMP_DISABLED = 'widget/TEMP_DISABLED',
   PIN = 'widget/PIN',
   FAV_WORD = 'widget/FAV_WORD',
@@ -54,7 +53,6 @@ export const enum ActionType {
 interface WidgetPayload {
   [ActionType.NEW_CONFIG]: undefined
   [ActionType.RESTORE]: undefined
-  [ActionType.TRIPLE_CTRL]: undefined
   [ActionType.TEMP_DISABLED]: boolean
   [ActionType.PIN]: undefined
   [ActionType.FAV_WORD]: boolean
@@ -80,8 +78,6 @@ export type WidgetState = {
     readonly isTempDisabled: boolean
     readonly isPinned: boolean
     readonly isFav: boolean
-    /** is called by triple ctrl */
-    readonly isTripleCtrl: boolean
     /** render wavefrom control panel */
     readonly withWaveform: boolean
     /** is a standalone panel running */
@@ -121,7 +117,6 @@ export const initState: WidgetState = {
     isTempDisabled: false,
     isPinned: isSaladictOptionsPage,
     isFav: false,
-    isTripleCtrl: isSaladictQuickSearchPage,
     withWaveform: false,
     withQSPanel: false,
     shouldBowlShow: false,
@@ -166,7 +161,7 @@ type WidgetReducer = {
 export const reducer: WidgetReducer = {
   [ActionType.NEW_CONFIG] (state) {
     const { config } = state
-    const widget = config.active
+    const widget = 1/* config.active */
       ? { ...state.widget }
       : _restoreWidget(state.widget)
 
@@ -195,70 +190,6 @@ export const reducer: WidgetReducer = {
     return {
       ...state,
       widget: _restoreWidget(state.widget),
-    }
-  },
-  [ActionType.TRIPLE_CTRL] (state) {
-    const {
-      panelWidth,
-      tripleCtrl,
-      tripleCtrlLocation,
-    } = state.config
-
-    if (!tripleCtrl || state.widget.shouldPanelShow) {
-      return state
-    }
-
-    let x = 10
-    let y = 10
-
-    switch (tripleCtrlLocation) {
-      case TCDirection.center:
-        x = (window.innerWidth - panelWidth) / 2
-        y = window.innerHeight * 0.3
-        break
-      case TCDirection.top:
-        x = (window.innerWidth - panelWidth) / 2
-        y = 10
-        break
-      case TCDirection.right:
-        x = window.innerWidth - panelWidth - 30
-        y = window.innerHeight * 0.3
-        break
-      case TCDirection.bottom:
-        x = (window.innerWidth - panelWidth) / 2
-        y = window.innerHeight - 10
-        break
-      case TCDirection.left:
-        x = 10
-        y = window.innerHeight * 0.3
-        break
-      case TCDirection.topLeft:
-        x = 10
-        y = 10
-        break
-      case TCDirection.topRight:
-        x = window.innerWidth - panelWidth - 30
-        y = 10
-        break
-      case TCDirection.bottomLeft:
-        x = 10
-        y = window.innerHeight - 10
-        break
-      case TCDirection.bottomRight:
-        x = window.innerWidth - panelWidth - 30
-        y = window.innerHeight - 10
-        break
-    }
-
-    const widget = _restoreWidget(state.widget)
-    const { width, height } = widget.panelRect
-    widget.isTripleCtrl = true
-    widget.shouldPanelShow = true
-    widget.panelRect = _reconcilePanelRect(x, y, width, height)
-
-    return {
-      ...state,
-      widget,
     }
   },
   [ActionType.TEMP_DISABLED] (state, isTempDisable) {
@@ -421,7 +352,7 @@ export const reducer: WidgetReducer = {
 
     // hide panel on otehr pages
     let widget
-    if (flag && state.config.tripleCtrlPageSel) {
+    if (flag/*  && state.config.tripleCtrlPageSel */) {
       widget = _restoreWidget(state.widget)
       widget.withQSPanel = true
     } else {
@@ -459,10 +390,6 @@ export function tempDisable (payload: boolean): Action<ActionType.TEMP_DISABLED>
 
 export function restoreWidget (): Action<ActionType.RESTORE> {
   return ({ type: ActionType.RESTORE })
-}
-
-export function tripleCtrlPressed (): Action<ActionType.TRIPLE_CTRL> {
-  return ({ type: ActionType.TRIPLE_CTRL })
 }
 
 export function panelPinSwitch (): Action<ActionType.PIN> {
@@ -517,9 +444,9 @@ export function startUpAction (): DispatcherThunk {
 
     if (isSaladictQuickSearchPage) {
       const { config } = getState()
-      dispatch(summonedPanelInit(config.tripleCtrlPreload, config.tripleCtrlAuto, 'quick-search'))
+      //dispatch(summonedPanelInit(config.tripleCtrlPreload, config.tripleCtrlAuto, 'quick-search'))
     } else if (!isSaladictPopupPage && !isSaladictOptionsPage) {
-      listenTrpleCtrl(dispatch, getState)
+      //listenTrpleCtrl(dispatch, getState)
     }
 
     createProfileIDListStream().subscribe(idlist => {
@@ -688,46 +615,27 @@ export function updateItemHeight (id: DictID | '_mtabox', height: number): Dispa
 
 export function newSelection (): DispatcherThunk {
   return (dispatch, getState) => {
+    //console.log('newSelection!!!')
     const { widget, selection, config } = getState()
 
-    const { selectionInfo, dbClick, ctrlKey, shiftKey, metaKey, instant, mouseX, mouseY, self } = selection
+    const { selectionInfo, instant, mouseX, mouseY, self } = selection
 
     if (self) {
       // inside dict panel
-      const { direct, double, holding } = config.panelMode
-      const { text, context } = selectionInfo
-      if (text && (
-            instant ||
-            direct ||
-            (double && dbClick) ||
-            (holding.shift && shiftKey) ||
-            (holding.ctrl && ctrlKey) ||
-            (holding.meta && metaKey)
-          )
-      ) {
-        dispatch(searchText({
-          info: getDefaultSelectionInfo({
-            text,
-            context,
-            title: 'Saladict Panel',
-            favicon: 'https://raw.githubusercontent.com/crimx/ext-saladict/dev/public/static/icon-16.png',
-          })
-        }))
-      }
       return
     }
 
     // standalone panel takes control
-    if (widget.withQSPanel && config.tripleCtrlPageSel) {
-      const { qsPanelMode } = config
-      if (selectionInfo.text && (
-            instant ||
-            qsPanelMode.direct ||
-            (qsPanelMode.double && dbClick) ||
-            (qsPanelMode.holding.shift && shiftKey) ||
-            (qsPanelMode.holding.ctrl && ctrlKey) ||
-            (qsPanelMode.holding.meta && metaKey)
-          )
+    if (widget.withQSPanel /* && config.tripleCtrlPageSel */) {
+      if (selectionInfo.text /* && dbClick */
+      // (
+      //       instant ||
+      //       qsPanelMode.direct ||
+      //        ||
+      //       (qsPanelMode.holding.shift && shiftKey) ||
+      //       (qsPanelMode.holding.ctrl && ctrlKey) ||
+      //       (qsPanelMode.holding.meta && metaKey)
+      //     )
       ) {
         message.send<MsgQSPanelSearchText>({
           type: MsgType.QSPanelSearchText,
@@ -739,9 +647,8 @@ export function newSelection (): DispatcherThunk {
 
     if (isStandalonePage || isSaladictOptionsPage) { return }
 
-    const isActive = config.active && !widget.isTempDisabled
+    const isActive = /* config.active &&  */!widget.isTempDisabled
 
-    const { direct, holding, double, icon } = config.mode
     const {
       isPinned,
       shouldPanelShow: lastShouldPanelShow,
@@ -749,16 +656,12 @@ export function newSelection (): DispatcherThunk {
       bowlRect: lastBowlRect,
     } = widget
 
+    //在这里
+
     const shouldPanelShow = Boolean(
       isPinned ||
       (isActive && selectionInfo.text && (
-        lastShouldPanelShow ||
-        direct ||
-        (double && dbClick) ||
-        (holding.shift && shiftKey) ||
-        (holding.ctrl && ctrlKey) ||
-        (holding.meta && metaKey) ||
-        instant
+        lastShouldPanelShow /*|| dbClick|| instant */
       )) ||
       isStandalonePage
     )
@@ -766,16 +669,18 @@ export function newSelection (): DispatcherThunk {
     const shouldBowlShow = Boolean(
       isActive &&
       selectionInfo.text &&
-      icon &&
       !shouldPanelShow &&
-      !direct &&
-      !(double && dbClick) &&
-      !(holding.shift && shiftKey) &&
-      !(holding.ctrl && ctrlKey) &&
-      !(holding.meta && metaKey) &&
-      !instant &&
+      // !dbClick &&
+      // !direct &&
+      // !(double && dbClick) &&
+      // !(holding.shift && shiftKey) &&
+      // !(holding.ctrl && ctrlKey) &&
+      // !(holding.meta && metaKey) &&
+      // !instant &&
       !isStandalonePage
     )
+
+    console.log('shouldBowlShow', shouldBowlShow, shouldPanelShow)
 
     const bowlRect = shouldBowlShow
       ? _getBowlRectFromEvent(mouseX, mouseY)
@@ -801,14 +706,10 @@ export function newSelection (): DispatcherThunk {
     dispatch(newSelectionAction(newWidgetPartial))
 
     // should search text?
-    const { pinMode } = config
+    // /pinMode 在这里
     if (shouldPanelShow && selectionInfo.text && (
           !isPinned ||
-          pinMode.direct ||
-          (pinMode.double && dbClick) ||
-          (pinMode.holding.shift && shiftKey) ||
-          (pinMode.holding.ctrl && ctrlKey) ||
-          (pinMode.holding.meta && metaKey)
+          /* pinMode.direct */ true
         )
     ) {
       dispatch(searchText({ info: selectionInfo }))
@@ -824,29 +725,6 @@ export function newSelection (): DispatcherThunk {
     Helpers
 \*-----------------------------------------------*/
 
-function listenTrpleCtrl (
-  dispatch: Dispatcher,
-  getState: () => StoreState,
-) {
-  message.self.addListener(MsgType.TripleCtrl, () => {
-    const { config, widget } = getState()
-    if (!config.tripleCtrl) {
-      return
-    }
-
-    if (!config.tripleCtrlStandalone && widget.shouldPanelShow) {
-      return
-    }
-
-    if (config.tripleCtrlStandalone) {
-      // focus if the standalone panel is already opened
-      message.send({ type: MsgType.OpenQSPanel })
-    } else {
-      dispatch(tripleCtrlPressed())
-      dispatch(summonedPanelInit(config.tripleCtrlPreload, config.tripleCtrlAuto, ''))
-    }
-  })
-}
 
 /** From popup page */
 function listenTempDisable (
@@ -874,7 +752,6 @@ function _restoreWidget (widget: WidgetState['widget']): Mutable<WidgetState['wi
   return {
     ...widget,
     isPinned: isSaladictOptionsPage,
-    isTripleCtrl: isSaladictQuickSearchPage,
     shouldPanelShow: isStandalonePage || isSaladictOptionsPage,
     shouldBowlShow: false,
     panelRect: {

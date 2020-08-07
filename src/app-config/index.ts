@@ -1,7 +1,6 @@
 import { DeepReadonly } from '@/typings/helpers'
 import { getALlDicts } from './dicts'
 import { MtaAutoUnfold as _MtaAutoUnfold, _getDefaultProfile } from './profiles'
-import { SupportedLangs } from '@/_helpers/lang-check'
 
 export type LangCode = 'zh-CN' | 'zh-TW' | 'en'
 
@@ -17,20 +16,6 @@ export type DictConfigs = DeepReadonly<DictConfigsMutable>
 export type DictID = keyof DictConfigsMutable
 export type MtaAutoUnfold = _MtaAutoUnfold
 
-export const enum TCDirection {
-  center,
-  top,
-  right,
-  bottom,
-  left,
-  topLeft,
-  topRight,
-  bottomLeft,
-  bottomRight,
-}
-
-export type InstantSearchKey = 'direct' | 'ctrl' | 'alt' | 'shift'
-
 /** '' means no preload */
 export type PreloadSource = '' | 'clipboard' | 'selection'
 
@@ -45,15 +30,6 @@ export default getDefaultConfig
 function _getDefaultConfig () {
   return {
     version: 12,
-
-    /** activate app, won't affect triple-ctrl setting */
-    active: true,
-
-    /** enable Google analytics */
-    analytics: true,
-
-    /** disable selection on type fields, like input and textarea */
-    noTypeField: false,
 
     /** use animation for transition */
     animation: true,
@@ -84,118 +60,6 @@ function _getDefaultConfig () {
     /** Show suggestions when typing on search box */
     searchSuggests: true,
 
-    /** when and how to search text */
-    mode: {
-      /** show pop icon first */
-      icon: true,
-      /** how panel directly */
-      direct: false,
-      /** double click */
-      double: false,
-      /** holding a key */
-      holding: {
-        shift: false,
-        ctrl: false,
-        meta: false,
-      },
-      /** cursor instant capture */
-      instant: {
-        enable: false,
-        key: 'alt' as InstantSearchKey,
-        delay: 600,
-      },
-    },
-
-    /** when and how to search text if the panel is pinned */
-    pinMode: {
-      /** direct: on mouseup */
-      direct: true,
-      /** double: double click */
-      double: false,
-      /** holding a key */
-      holding: {
-        shift: false,
-        ctrl: false,
-        meta: false,
-      },
-      /** cursor instant capture */
-      instant: {
-        enable: false,
-        key: 'alt' as InstantSearchKey,
-        delay: 600,
-      },
-    },
-
-    /** when and how to search text inside dict panel */
-    panelMode: {
-      /** direct: on mouseup */
-      direct: false,
-      /** double: double click */
-      double: false,
-      /** holding a key */
-      holding: {
-        shift: false,
-        ctrl: false,
-        meta: false,
-      },
-      /** cursor instant capture */
-      instant: {
-        enable: false,
-        key: 'alt' as InstantSearchKey,
-        delay: 600,
-      },
-    },
-
-    /** when this is a quick search standalone panel running */
-    qsPanelMode: {
-      /** direct: on mouseup */
-      direct: false,
-      /** double: double click */
-      double: false,
-      /** holding a key */
-      holding: {
-        shift: false,
-        ctrl: true,
-        meta: false,
-      },
-      /** cursor instant capture */
-      instant: {
-        enable: false,
-        key: 'alt' as InstantSearchKey,
-        delay: 600,
-      },
-    },
-
-    /** hover instead of click */
-    bowlHover: true,
-
-    /** double click delay, in ms */
-    doubleClickDelay: 450,
-
-    /** show panel when triple press ctrl */
-    tripleCtrl: true,
-
-    /** preload source */
-    tripleCtrlPreload: 'clipboard' as PreloadSource,
-
-    /** auto search when triple hit ctrl */
-    tripleCtrlAuto: false,
-
-    /** where should the dict appears */
-    tripleCtrlLocation: TCDirection.center,
-
-    /** should panel be in a standalone window */
-    tripleCtrlStandalone: true,
-
-    /** standalone panel height */
-    tripleCtrlHeight: 600,
-
-    /** resize main widnow to leave space to standalone window */
-    tripleCtrlSidebar: '' as '' | 'left' | 'right',
-
-    /** should standalone panel response to page selection */
-    tripleCtrlPageSel: true,
-
     /** browser action panel preload source */
     baPreload: 'clipboard' as PreloadSource,
 
@@ -218,18 +82,6 @@ function _getDefaultConfig () {
       sogou: true,
       baidu: true,
     } as { [id in DictID]: boolean },
-
-    /** start searching when source containing the languages */
-    language: {
-      chinese: true,
-      english: true,
-      japanese: true,
-      korean: true,
-      french: true,
-      spanish: true,
-      deutsch: true,
-      others: false,
-    } as SupportedLangs,
 
     /** auto pronunciation */
     autopron: {

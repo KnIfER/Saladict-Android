@@ -76,7 +76,8 @@ export const clickPeriodCount$ = merge(
   mapTo(true)(validMouseup$$),
   validMouseup$$.pipe(
     withLatestFrom(config$$),
-    switchMap(args => timer(args[1].doubleClickDelay).pipe(
+    //双击延时在这里！
+    switchMap(args => timer(450).pipe(
       take(1),
       mapTo(false)
     )),

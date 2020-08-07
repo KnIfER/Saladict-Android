@@ -1,12 +1,10 @@
 import { message } from '@/_helpers/browser-api'
 import * as selection from '@/_helpers/selection'
-import { checkSupportedLangs } from '@/_helpers/lang-check'
 import { Mutable } from '@/typings/helpers'
 import { MsgType, PostMsgType, PostMsgSelection } from '@/typings/message'
 
 import { lastMousedown$$, validMouseup$$, clickPeriodCount$ } from './mouse-events'
 import {
-  isTypeField,
   sendMessage,
   sendEmptyMessage,
   isQSKey,
@@ -117,11 +115,11 @@ if (!window.name.startsWith('alloydict-') && !isSaladictOptionsPage) {
     )),
     filter(group => group.length >= 3),
     withLatestFrom(config$$),
-  ).subscribe(args => {
+  )/* .subscribe(args => {
     if (args[1].tripleCtrl) {
       message.self.send({ type: MsgType.TripleCtrl })
     }
-  })
+  }) */
 }
 
 validMouseup$$.pipe(
@@ -131,14 +129,7 @@ validMouseup$$.pipe(
       return false
     }
 
-    if (config.noTypeField && isTypeField(lastMousedownEvent)) {
-      const isDictPanel = isSaladictInternalPage
-        ? isInPanelOnInternalPage(lastMousedownEvent)
-        : window.name === 'alloydict-dictpanel'
-      sendEmptyMessage(isDictPanel)
-      return false
-    }
-
+    //输入框检查在这里！  if (config.noTypeField && isTypeField(lastMousedownEvent)) {
     return true
   }),
   map(args => {
@@ -168,8 +159,8 @@ validMouseup$$.pipe(
   const isDictPanel = isSaladictInternalPage
     ? isInPanelOnInternalPage(lastMousedownEvent)
     : window.name === 'alloydict-dictpanel'
-
-  if (checkSupportedLangs(config.language, partialSelInfo.text)) {
+  //检查语言在这呢! checkSupportedLangs(config.language, partialSelInfo.text)
+  if (true) {
     sendMessage({
       mouseX: event.clientX,
       mouseY: event.clientY,
@@ -180,7 +171,5 @@ validMouseup$$.pipe(
       self: isDictPanel,
       selectionInfo: selection.getSelectionInfo(partialSelInfo)
     })
-  } else {
-    sendEmptyMessage(isDictPanel)
   }
 })

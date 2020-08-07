@@ -1,7 +1,6 @@
 import { AppConfig } from '@/app-config'
 import { message } from '@/_helpers/browser-api'
 import * as selection from '@/_helpers/selection'
-import { checkSupportedLangs } from '@/_helpers/lang-check'
 import {
   MsgType,
   MsgIsPinned,
@@ -32,9 +31,9 @@ import { debounceTime } from 'rxjs/operators/debounceTime'
 import { distinctUntilChanged } from 'rxjs/operators/distinctUntilChanged'
 
 const isSaladictInternalPage = !!window.__SALADICT_INTERNAL_PAGE__
-const isSaladictOptionsPage = !!window.__SALADICT_OPTIONS_PAGE__
-const isSaladictPopupPage = !!window.__SALADICT_POPUP_PAGE__
-const isNoSelectionPage = isSaladictOptionsPage || isSaladictPopupPage
+// const isSaladictOptionsPage = !!window.__SALADICT_OPTIONS_PAGE__
+// const isSaladictPopupPage = !!window.__SALADICT_POPUP_PAGE__
+//const isNoSelectionPage = isSaladictOptionsPage || isSaladictPopupPage
 
 /**
  * Cursor Instant Capture
@@ -53,19 +52,12 @@ combineLatest(
     ),
   ),
 ).pipe(
-  map(([config, isPinned, withQSPanel]) => {
-    const { instant } = config[
-      withQSPanel
-        ? 'qsPanelMode'
-        : (isNoSelectionPage || window.name === 'alloydict-dictpanel')
-          ? 'panelMode'
-          : isPinned ? 'pinMode' : 'mode'
-    ]
+  map(([config/* , isPinned, withQSPanel */]) => {
     return [
-      instant.enable ? instant.key : '',
-      instant.delay,
+      /* instant.enable ? instant.key :  */'',
+      450/* instant.delay */,
       config,
-    ] as ['' | AppConfig['mode']['instant']['key'], number, AppConfig]
+    ] as ['', number, AppConfig]
   }),
   distinctUntilChanged((oldVal, newVal) => oldVal[0] === newVal[0] && oldVal[1] === newVal[1]),
   switchMap(([instant, insCapDelay, config]) => {
@@ -107,7 +99,8 @@ combineLatest(
     oldVal[1].context === newVal[1].context
   )),
 ).subscribe(([[event, config], partialSelInfo]) => {
-  if (checkSupportedLangs(config.language, partialSelInfo.text)) {
+  //检查语言 还有呢!checkSupportedLangs(config.language, partialSelInfo.text)
+  if (true) {
     sendMessage({
       mouseX: event.clientX,
       mouseY: event.clientY,

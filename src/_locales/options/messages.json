@@ -269,12 +269,6 @@
   "opt_mta_popup": {
     "zh_CN": "只在右上弹框展开"
   },
-  "opt_no_type_field": {
-    "zh_CN": "不在输入框划词"
-  },
-  "opt_no_type_field_help": {
-    "zh_CN": "开启后，本扩展会自动识别输入框以及常见编辑器，如 CodeMirror、ACE 和 Monaco。"
-  },
   "opt_profile_change": {
     "zh_CN": "此选项会因「情景模式」而改变。"
   },

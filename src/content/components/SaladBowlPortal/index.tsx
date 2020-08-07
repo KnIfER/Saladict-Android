@@ -47,12 +47,11 @@ export default class SaladBowlPortal extends React.Component<SaladBowlPortalProp
   }
 
   renderBowl = () => {
-    const { mouseOnBowl, isAnimation, bowlHover } = this.props
+    const { mouseOnBowl, isAnimation } = this.props
     return (
       <SaladBowl
         mouseOnBowl={mouseOnBowl}
         isAnimation={isAnimation}
-        bowlHover={bowlHover}
       />
     )
   }
