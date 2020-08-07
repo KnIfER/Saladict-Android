@@ -21,20 +21,13 @@ const getDictStyles = memoizeOne((selected: DictID[]): string => {
   ).join('\n')
 })
 
-export type DictPanelPortalDispatchers = Omit<
-  DictPanelDispatchers,
-  'handleDragAreaTouchStart' | 'handleDragAreaMouseDown'
-> & {
-  panelOnDrag: (x: number, y: number) => any
-}
+export type DictPanelPortalDispatchers = DictPanelDispatchers
 
 export type ChildrenProps =
   DictPanelPortalDispatchers &
   Omit<
     DictPanelProps,
-    'panelWidth' |
-    'handleDragAreaTouchStart' |
-    'handleDragAreaMouseDown'
+    'panelWidth'
   >
 
 export interface DictPanelPortalProps extends ChildrenProps {
@@ -127,98 +120,6 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
     this.isMount = false
   }
 
-  handleDragAreaMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
-    // prevent mousedown default dragging
-    e.preventDefault()
-    e.stopPropagation()
-    this.handleDragStart(e.clientX, e.clientY)
-  }
-
-  handleDragAreaTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
-    e.stopPropagation()
-    // passive events
-    // e.preventDefault()
-    this.handleDragStart(e.touches[0].clientX, e.touches[0].clientY)
-  }
-
-  handleDragStart = (clientX: number, clientY: number) => {
-    const activeElement = document.activeElement as any
-    if (activeElement) { activeElement.blur() }
-
-    if (isSaladictInternalPage) {
-      this.lastMouseX = clientX
-      this.lastMouseY = clientY
-    } else {
-      // e is from iframe, so there is offset
-      this.lastMouseX = clientX + this.props.panelRect.x
-      this.lastMouseY = clientY + this.props.panelRect.y
-    }
-
-    this.setState({ isDragging: true })
-    window.addEventListener('mousemove', this.handleWindowMouseMove, { capture: true })
-    window.addEventListener('touchmove', this.handleWindowTouchMove, { capture: true })
-    window.addEventListener('mouseup', this.handleDragEnd, { capture: true })
-    window.addEventListener('touchend', this.handleDragEnd, { capture: true })
-
-    if (this.frame) {
-      this.frame.style.setProperty('will-change', 'top, left', 'important')
-    }
-
-    document.body.appendChild(this.dragBg)
-  }
-
-  handleDragEnd = () => {
-    this.setState({ isDragging: false })
-    window.removeEventListener('mousemove', this.handleWindowMouseMove, { capture: true })
-    window.removeEventListener('touchmove', this.handleWindowTouchMove, { capture: true })
-    window.removeEventListener('mouseup', this.handleDragEnd, { capture: true })
-    window.removeEventListener('touchend', this.handleDragEnd, { capture: true })
-
-    if (this.frame) {
-      this.frame.style.removeProperty('will-change')
-    }
-
-    this.dragBg.remove()
-  }
-
-  handleWindowMouseMove = (e: MouseEvent) => {
-    e.stopPropagation()
-    e.preventDefault()
-    this.handleDragging(e.clientX, e.clientY)
-  }
-
-  handleWindowTouchMove = (e: TouchEvent) => {
-    e.stopPropagation()
-    // passive events
-    // e.preventDefault()
-    this.handleDragging(e.touches[0].clientX, e.touches[0].clientY)
-  }
-
-  handleFrameMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    e.stopPropagation()
-    e.preventDefault()
-    const { x, y } = this.props.panelRect
-    this.handleDragging(e.clientX + x, e.clientY + y)
-  }
-
-  handleFrameTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
-    e.stopPropagation()
-    // passive events
-    // e.preventDefault()
-    const { x, y } = this.props.panelRect
-    this.handleDragging(e.touches[0].clientX + x, e.touches[0].clientY + y)
-  }
-
-  handleDragging = (clientX: number, clientY: number) => {
-    const { x, y } = this.props.panelRect
-    this.props.panelOnDrag(
-      x + clientX - this.lastMouseX,
-      y + clientY - this.lastMouseY,
-    )
-    this.lastMouseX = clientX
-    this.lastMouseY = clientY
-  }
-
   handleFrameKeyUp = ({ key }: React.KeyboardEvent<HTMLDivElement>) => {
     if (key === 'Escape') {
       this.props.closePanel()
@@ -302,8 +203,6 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
             <DictPanel
               {...this.props}
               panelWidth={this.props.panelRect.width}
-              handleDragAreaMouseDown={this.handleDragAreaMouseDown}
-              handleDragAreaTouchStart={this.handleDragAreaTouchStart}
             />
           </div>
         : <PortalFrame
@@ -317,8 +216,6 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
             <DictPanel
               {...this.props}
               panelWidth={this.props.panelRect.width}
-              handleDragAreaMouseDown={this.handleDragAreaMouseDown}
-              handleDragAreaTouchStart={this.handleDragAreaTouchStart}
             />
           </PortalFrame>
     )
@@ -340,10 +237,6 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
     return ReactDOM.createPortal(
       <div
         className='alloydict-DIV'
-        onMouseMoveCapture={!isSaladictInternalPage && isDragging ? this.handleFrameMouseMove : undefined}
-        onTouchMoveCapture={!isSaladictInternalPage && isDragging ? this.handleFrameTouchMove : undefined}
-        onMouseUpCapture={isDragging ? this.handleDragEnd : undefined}
-        onTouchEndCapture={isDragging ? this.handleDragEnd : undefined}
         onKeyUp={this.handleFrameKeyUp}
       >
         <CSSTransition

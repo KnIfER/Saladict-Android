@@ -22,8 +22,6 @@ const isSaladictQuickSearchPage = !!window.__SALADICT_QUICK_SEARCH_PAGE__
 const isStandalonePage = isSaladictPopupPage || isSaladictQuickSearchPage
 
 export interface MenuBarDispatchers {
-  readonly handleDragAreaMouseDown: (e: React.MouseEvent<HTMLDivElement>) => any
-  readonly handleDragAreaTouchStart: (e: React.TouchEvent<HTMLDivElement>) => any
   readonly searchText: (arg?: { info: SelectionInfo }) => any
   readonly requestFavWord: () => any
   readonly shareImg: () => any
@@ -449,8 +447,6 @@ export default class MenuBar extends React.PureComponent<MenuBarProps, MenuBarSt
       t,
       isFav,
       isPinned,
-      handleDragAreaMouseDown,
-      handleDragAreaTouchStart,
       searchHistory,
       searchBox,
       searchSuggests,
@@ -521,10 +517,7 @@ export default class MenuBar extends React.PureComponent<MenuBarProps, MenuBarSt
           </svg>
         </button>
 
-        <div className='panel-MenuBar_DragArea'
-          onMouseDown={handleDragAreaMouseDown}
-          onTouchStart={handleDragAreaTouchStart}
-        />
+        <div className='panel-MenuBar_DragArea'/>
 
         <div className='panel-MenuBar_SettingsWrapper'>
           <button className='panel-MenuBar_Btn' onClick={this.showProfilePanel}

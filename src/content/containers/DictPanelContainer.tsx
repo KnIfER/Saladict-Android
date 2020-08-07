@@ -52,7 +52,6 @@ export const mapDispatchToProps: { [k in keyof DictPanelPortalDispatchers]: Func
   requestFavWord,
   panelPinSwitch,
   updateItemHeight,
-  panelOnDrag,
 
   shareImg: () => {/** @todo */},
   closePanel: closePanel,
