@@ -249,6 +249,19 @@ module.exports = {
     ],
   },
   plugins: [
+    new webpack.DefinePlugin({ // <-- key to reducing React's size
+      'process.env': {
+        'NODE_ENV': JSON.stringify('production')
+      }
+    }),
+    new webpack.optimize.AggressiveMergingPlugin(),//Merge chunks 
+
+    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+    //new webpack.IgnorePlugin(/.*moment/, /.*/),
+    //new webpack.IgnorePlugin(/.*/, /dom-scroll-into-view/),
+    // new webpack.IgnorePlugin(/.*/, /MenuItem/),
+    // new webpack.IgnorePlugin(/.*MenuItem/, /.*/),
+    // new webpack.IgnorePlugin(/.*dom-scroll-into-view/, /.*/),
     argv.notypecheck
     ? null
     : new ForkTsCheckerWebpackPlugin({tslint: false}),
@@ -334,7 +347,18 @@ module.exports = {
     // Tailor locales
     new webpack.ContextReplacementPlugin(/moment[\\/]locale$/, /^\.\/(en|zh-cn|zh-tw)$/),
     !process.env.CI && argv.analyze
-    ? new BundleAnalyzerPlugin()
+    ? new BundleAnalyzerPlugin({
+      analyzerMode: 'server', 
+      analyzerHost: '127.0.0.1', 
+      analyzerPort: 8889, 
+      reportFilename: 'report.html', 
+      defaultSizes: 'parsed', 
+      openAnalyzer: true,
+       generateStatsFile: true, 
+       statsFilename: 'stats.json', 
+       statsOptions: null, 
+       logLevel: 'info' 
+    })
     : null,
   ].filter(Boolean),
   // Some libraries import Node modules but don't use them in the browser.
