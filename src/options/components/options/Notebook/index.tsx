@@ -1,69 +1,16 @@
 import React from 'react'
-import { storage } from '@/_helpers/browser-api'
 import { Props } from '../typings'
 import { updateConfigOrProfile, formItemLayout } from '../helpers'
-import WebdavModal from './WebdavModal'
-import ShanbayModal from './ShanbayModal'
-import {
-  Service as WebDAVService,
-  SyncConfig as WebDAVConfig
-} from '@/background/sync-manager/services/webdav'
-import {
-  Service as ShanbayService,
-  SyncConfig as ShanbayConfig
-} from '@/background/sync-manager/services/shanbay'
 
 import { FormComponentProps } from 'antd/lib/form'
-import { Form, Switch, Checkbox, Button } from 'antd'
+import { Form, Switch, Checkbox } from 'antd'
 
 export type NotebookProps = Props & FormComponentProps
 
-interface SyncConfigs {
-  [WebDAVService.id]?: WebDAVConfig
-  [ShanbayService.id]?: ShanbayConfig
-}
-
-export interface NotebookState {
-  isShowSyncServiceModal: {
-    [WebDAVService.id]: boolean
-    [ShanbayService.id]: boolean
-  }
-  syncConfigs: null | SyncConfigs
-}
-
-export class Notebook extends React.Component<NotebookProps, NotebookState> {
-  state: NotebookState = {
-    isShowSyncServiceModal: {
-      [WebDAVService.id]: false,
-      [ShanbayService.id]: false,
-    },
-    syncConfigs: null,
-  }
-
-  constructor (props: NotebookProps) {
-    super(props)
-
-    storage.sync.get('syncConfig').then(({ syncConfig }) => {
-      this.setState({ syncConfigs: syncConfig || {} })
-    })
-    storage.sync.addListener<SyncConfigs>('syncConfig', ({ syncConfig }) => {
-      this.setState({ syncConfigs: syncConfig.newValue || {} })
-    })
-  }
-
-  showSyncServiceModal = (id: keyof NotebookState['isShowSyncServiceModal'], isShow: boolean) => {
-    this.setState(prevState => ({
-      isShowSyncServiceModal: {
-        ...prevState.isShowSyncServiceModal,
-        [id]: isShow,
-      }
-    }))
-  }
-
+export class Notebook extends React.Component<NotebookProps> {
   render () {
     const { t, config } = this.props
     const { getFieldDecorator } = this.props.form
-    const { syncConfigs, isShowSyncServiceModal } = this.state
 
     return (
       <Form>
@@ -120,46 +67,6 @@ export class Notebook extends React.Component<NotebookProps, NotebookState> {
             }</Form.Item>
           ))}
         </Form.Item>
-        <Form.Item
-          {...formItemLayout}
-          label={t('opt_sync_webdav')}
-        >
-          <Button onClick={() => this.showSyncServiceModal(WebDAVService.id, true)}>{
-            `${t('opt_sync_webdav')} (${t(
-              syncConfigs && syncConfigs[WebDAVService.id] && syncConfigs[WebDAVService.id]!.url
-                ? 'common:enabled'
-                : 'common:disabled'
-            )})`
-          }</Button>
-        </Form.Item>
-        <Form.Item
-          {...formItemLayout}
-          label={t('opt_sync_shanbay')}
-        >
-          <Button onClick={() => this.showSyncServiceModal(ShanbayService.id, true)}>{
-            `${t('opt_sync_shanbay')} (${t(
-              syncConfigs && syncConfigs[ShanbayService.id] && syncConfigs[ShanbayService.id]!.enable
-                ? 'common:enabled'
-                : 'common:disabled'
-            )})`
-          }</Button>
-        </Form.Item>
-        {syncConfigs && (
-          <>
-            <WebdavModal
-              syncConfig={syncConfigs[WebDAVService.id]}
-              t={t}
-              show={isShowSyncServiceModal[WebDAVService.id]}
-              onClose={() => this.showSyncServiceModal(WebDAVService.id, false)}
-            />
-            <ShanbayModal
-              syncConfig={syncConfigs[ShanbayService.id]}
-              t={t}
-              show={isShowSyncServiceModal[ShanbayService.id]}
-              onClose={() => this.showSyncServiceModal(ShanbayService.id, false)}
-            />
-          </>
-        )}
       </Form>
     )
   }

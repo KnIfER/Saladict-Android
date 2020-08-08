@@ -72,10 +72,6 @@ export const enum MsgType {
   /** Manually emit selection event */
   EmitSelection,
 
-  SyncServiceInit,
-  SyncServiceDownload,
-  SyncServiceUpload,
-
   /** Manually trigger context menus click */
   ContextMenusClick,
 
@@ -243,34 +239,6 @@ export interface MsgQueryPanelState {
   readonly type: MsgType.QueryPanelState
   /** object path, default returns the whole state */
   readonly path?: string
-}
-
-export interface MsgSyncServiceInit<C = any> {
-  readonly type: MsgType.SyncServiceInit
-  readonly serviceID: string
-  readonly config: C
-}
-
-export interface MsgSyncServiceDownload {
-  readonly type: MsgType.SyncServiceDownload
-  readonly serviceID: string
-  readonly noCache?: boolean
-}
-
-export const enum SyncServiceUploadOp {
-  Add,
-  Delete,
-}
-
-export interface MsgSyncServiceUpload {
-  readonly type: MsgType.SyncServiceUpload
-  readonly op: SyncServiceUploadOp
-  readonly serviceID?: string
-  /** When op is Add */
-  readonly words?: Word[]
-  /** When op is Delete */
-  readonly dates?: number[]
-  readonly force?: boolean
 }
 
 export interface MsgContextMenusClick {

@@ -3,7 +3,6 @@ import { timeout, timer } from '@/_helpers/promise-more'
 import { getSuggests } from '@/_helpers/getSuggests'
 import { DictSearchResult } from '@/typings/server'
 import { SearchErrorType, SearchFunction, GetSrcPageFunction } from '@/components/dictionaries/helpers'
-import { syncServiceInit, syncServiceDownload, syncServiceUpload } from './sync-manager'
 import { isInNotebook, saveWord, deleteWords, getWordsByText, getWords } from './database'
 import { play } from './audio-manager'
 import './types'
@@ -19,9 +18,6 @@ import {
   MsgGetWordsByText,
   MsgGetWords,
   MsgQSPanelIDChanged,
-  MsgSyncServiceInit,
-  MsgSyncServiceDownload,
-  MsgSyncServiceUpload,
   MsgGetSuggests,
   MsgDictEngineMethod,
   MsgWaveFormPlay,
@@ -80,12 +76,12 @@ message.addListener((data, sender: browser.runtime.MessageSender) => {
     case MsgType.GetSuggests:
       return getSuggests((data as MsgGetSuggests).text)
 
-    case MsgType.SyncServiceInit:
-      return syncServiceInit(data as MsgSyncServiceInit)
-    case MsgType.SyncServiceDownload:
-      return syncServiceDownload(data as MsgSyncServiceDownload)
-    case MsgType.SyncServiceUpload:
-      return syncServiceUpload(data as MsgSyncServiceUpload)
+    // case MsgType.SyncServiceInit:
+    //   return syncServiceInit(data as MsgSyncServiceInit)
+    // case MsgType.SyncServiceDownload:
+    //   return syncServiceDownload(data as MsgSyncServiceDownload)
+    // case MsgType.SyncServiceUpload:
+    //   return syncServiceUpload(data as MsgSyncServiceUpload)
 
     case 'youdao_translate_ajax' as any:
       return youdaoTranslateAjax(data.request)

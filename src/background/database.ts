@@ -2,7 +2,6 @@ import Dexie from 'dexie'
 import { storage } from '@/_helpers/browser-api'
 import { isContainChinese, isContainEnglish } from '@/_helpers/lang-check'
 import { Word, Area } from '@/_helpers/record-manager'
-import { syncServiceUpload } from './sync-manager'
 import {
   MsgIsInNotebook,
   MsgSaveWord,
@@ -10,8 +9,6 @@ import {
   MsgGetWordsByText,
   MsgGetWords,
   MsgGetWordsResponse,
-  SyncServiceUploadOp,
-  MsgType,
 } from '@/typings/message'
 
 export class SaladictDB extends Dexie {
@@ -80,11 +77,11 @@ export function saveWord ({ area, info }: MsgSaveWord) {
     date: info.date || Date.now()
   }
   if (area === 'notebook') {
-    syncServiceUpload({
-      type: MsgType.SyncServiceUpload,
-      op: SyncServiceUploadOp.Add,
-      words: [word],
-    }).catch(() => {/* nothing */})
+    // syncServiceUpload({
+    //   type: MsgType.SyncServiceUpload,
+    //   op: SyncServiceUploadOp.Add,
+    //   words: [word],
+    // }).catch(() => {/* nothing */})
   }
   return db[area].put(word)
 }
@@ -96,22 +93,22 @@ export function saveWords ({ area, words }: { area: Area, words: Word[] }) {
     }
   }
   if (area === 'notebook') {
-    syncServiceUpload({
-      type: MsgType.SyncServiceUpload,
-      op: SyncServiceUploadOp.Add,
-      words,
-    }).catch(() => {/* nothing */})
+    // syncServiceUpload({
+    //   type: MsgType.SyncServiceUpload,
+    //   op: SyncServiceUploadOp.Add,
+    //   words,
+    // }).catch(() => {/* nothing */})
   }
   return db[area].bulkPut(words)
 }
 
 export function deleteWords ({ area, dates }: MsgDeleteWords) {
   if (area === 'notebook') {
-    syncServiceUpload({
-      type: MsgType.SyncServiceUpload,
-      op: SyncServiceUploadOp.Delete,
-      dates,
-    }).catch(() => {/* nothing */})
+    // syncServiceUpload({
+    //   type: MsgType.SyncServiceUpload,
+    //   op: SyncServiceUploadOp.Delete,
+    //   dates,
+    // }).catch(() => {/* nothing */})
   }
   return Array.isArray(dates)
     ? db[area].bulkDelete(dates)
