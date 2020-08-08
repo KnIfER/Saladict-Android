@@ -6,7 +6,6 @@ import i18nLoader from '@/_helpers/i18n'
 import worPageLocales from '@/_locales/wordpage'
 import contentLocales from '@/_locales/content'
 
-import { LocaleProvider as ProviderAntdLocale } from 'antd'
 import zh_CN from 'antd/lib/locale-provider/zh_CN'
 import zh_TW from 'antd/lib/locale-provider/zh_TW'
 import en_US from 'antd/lib/locale-provider/en_US'
@@ -45,9 +44,7 @@ export default class WordPage extends React.Component<WordPageProps, WordPageSta
   render () {
     return (
       <ProviderI18next i18n={i18n}>
-        <ProviderAntdLocale locale={antdLocales[this.state.locale]}>
-          <App area={this.props.area} locale={this.state.locale} />
-        </ProviderAntdLocale>
+        <App area={this.props.area} locale={this.state.locale} />
       </ ProviderI18next>
     )
   }

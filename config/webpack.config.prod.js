@@ -257,7 +257,7 @@ module.exports = {
     new webpack.optimize.AggressiveMergingPlugin(),//Merge chunks 
 
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-    //new webpack.IgnorePlugin(/.*moment/, /.*/),
+    new webpack.IgnorePlugin(/.*moment/, /.*/),
     //new webpack.IgnorePlugin(/.*/, /dom-scroll-into-view/),
     // new webpack.IgnorePlugin(/.*/, /MenuItem/),
     // new webpack.IgnorePlugin(/.*MenuItem/, /.*/),

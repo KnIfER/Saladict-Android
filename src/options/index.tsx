@@ -18,7 +18,6 @@ import dictsLocles from '@/_locales/dicts'
 import optionsLocles from '@/_locales/options'
 import profileLocles from '@/_locales/config-profiles'
 
-import { LocaleProvider as ProviderAntdLocale, message } from 'antd'
 import zh_CN from 'antd/lib/locale-provider/zh_CN'
 import zh_TW from 'antd/lib/locale-provider/zh_TW'
 import en_US from 'antd/lib/locale-provider/en_US'
@@ -83,8 +82,10 @@ export class Options extends React.Component<OptionsProps, OptionsState> {
 
     addConfigListener(({ newConfig }) => {
       this.setState({ config: newConfig })
-      message.destroy()
-      message.success(i18n.t('msg_updated'))
+      //message.destroy()
+      //message.success(i18n.t('msg_updated'))
+      //message.success(i18n.t('msg_updated'))
+      console.log(i18n.t('msg_updated'));
     })
 
     addActiveProfileListener(({ newProfile }) => {
@@ -92,23 +93,28 @@ export class Options extends React.Component<OptionsProps, OptionsState> {
         profile: newProfile,
         rawProfileName: this.getActiveProfileName(newProfile.id),
       })
-      message.destroy()
-      message.success(i18n.t('msg_updated'))
+      //message.destroy()
+      //message.success(i18n.t('msg_updated'))
+      console.log(i18n.t('msg_updated'));
     })
 
     addProfileIDListListener(({ newValue }) => {
       this.setState({ profileIDList: newValue })
-      message.destroy()
-      message.success(i18n.t('msg_updated'))
+      //message.destroy()
+      //message.success(i18n.t('msg_updated'))
+      console.log(i18n.t('msg_updated'));
     })
   }
 
   render () {
+    //<ProviderAntdLocale locale={antdLocales[this.state.config.langCode] || zh_CN}>
+    //  {React.createElement(App, { ...this.state })}
+    //</ProviderAntdLocale>
     return (
       <ProviderI18next i18n={i18n}>
-        <ProviderAntdLocale locale={antdLocales[this.state.config.langCode] || zh_CN}>
-          {React.createElement(App, { ...this.state })}
-        </ProviderAntdLocale>
+        
+        {React.createElement(App, { ...this.state })}
+
       </ ProviderI18next>
     )
   }
