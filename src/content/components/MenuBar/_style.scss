@@ -2,7 +2,7 @@
   display: flex;
   align-items: center;
   position: relative;
-  height: 30px;
+  height: 32px;
   font-size: 14px;
   //background-color: rgb(92, 175, 158);
   background: linear-gradient(to top, #5972ff, #4f7eff);
@@ -10,7 +10,7 @@
 
 .panel-MenuBar_Btn {
   width: 30px;
-  height: 30px;
+  height: 100%;
   overflow: hidden;
   padding: 8px;
   font-size: 0;
@@ -57,8 +57,8 @@
 }
 
 .panel-MenuBar_SearchBox {
-  flex-grow: 1;
   width: 4em;
+  height:68%;
   padding: 0 5px;
   border: 0 none;
   outline: 0 none;
@@ -66,6 +66,7 @@
   background-color: rgba(225, 225, 225, 0.1);
 
   flex-grow: 7;
+  font-size: 17px;
 }
 
 .panel-MenuBar_SuggestsWrapper {
@@ -159,6 +160,7 @@
 
 .panel-MenuBar_SettingsWrapper {
   position: relative;
+  height:100%;
 }
 
 .panel-MenuBar_Profiles {

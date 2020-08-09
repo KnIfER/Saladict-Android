@@ -518,7 +518,7 @@ export function requestFavWord (): DispatcherThunk {
     const { config, dictionaries, widget } = getState()
     const word = { ...dictionaries.searchHistory[0], date: Date.now() }
     if (config.editOnFav) {
-      if (isStandalonePage) {
+      if (0&&isStandalonePage) {
         // Not enough space to open word editor on popup page
         // Open Notebook instead
         try {
@@ -532,6 +532,9 @@ export function requestFavWord (): DispatcherThunk {
           console.warn(err)
         }
       } else {
+        console.log('requestFavWord_', dispatch, word)
+        word.context="Happy"
+        word.url="http://www.59zk.com/post/252.html"
         dispatch(updateEditorWord(word))
       }
       return

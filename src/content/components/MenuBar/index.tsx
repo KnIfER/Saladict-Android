@@ -241,10 +241,10 @@ export default class MenuBar extends React.PureComponent<MenuBarProps, MenuBarSt
 
   /** add/remove current search word into/from notebook */
   handleIconFavClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    if (e.button !== 2) {
+    //if (e.button !== 2) {
       e.currentTarget.blur()
-      this.props.requestFavWord()
-    }
+      console.log('handleIconFavClick', this.props.requestFavWord())
+   // }
   }
 
   /** open notebook on right click */
@@ -542,8 +542,7 @@ export default class MenuBar extends React.PureComponent<MenuBarProps, MenuBarSt
         </div>
 
         <button className='panel-MenuBar_Btn' onClick={this.handleIconFavClick}
-          onMouseDown={this.handleIconFavMouseDown}
-          disabled={!searchBox.text || isSaladictOptionsPage}
+          //disabled={!searchBox.text || isSaladictOptionsPage}
         >
           <svg
             className={`panel-MenuBar_Icon-fav ${isFav ? 'isActive' : ''}`}

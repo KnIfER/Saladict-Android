@@ -35,7 +35,8 @@ interface WordEditorState {
 export class WordEditor extends React.PureComponent<WordEditorProps & { t: TranslationFunction }, WordEditorState> {
   constructor (props: WordEditorProps & { t: TranslationFunction }) {
     super(props)
-
+    //宽度计算在这里！
+    
     const winWidth = window.innerWidth
     const width = Math.min(800, Math.max(400, winWidth - props.dictPanelWidth - 100))
 
@@ -142,7 +143,7 @@ export class WordEditor extends React.PureComponent<WordEditorProps & { t: Trans
     } = this.state
 
     return (
-      <div className='wordEditor-Container' style={{ width, transform: `translateX(${leftOffset}px)` }}>
+      <div className='wordEditor-Container' /* style={{ width, transform: `translateX(${leftOffset}px)` }} */>
         <header className='wordEditor-Header'>
           <h1 className='wordEditor-Title'>{t('wordEditorTitle')}</h1>
           <button type='button'

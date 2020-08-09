@@ -69,7 +69,6 @@ export async function saveWord (area: Area, info: SelectionInfo): Promise<void> 
 }
 
 export async function deleteWords (area: Area, dates?: number[]): Promise<void> {
-  await message.send({ type: MsgType.SyncServiceDownload })
   await message.send<MsgDeleteWords>({ type: MsgType.DeleteWords, area, dates })
 }
 

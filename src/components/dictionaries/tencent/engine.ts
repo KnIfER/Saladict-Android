@@ -65,7 +65,7 @@ export const search: SearchFunction<TencentSearchResult, MachineTranslatePayload
 
   return getToken()
     .then(({ qtv, qtk }) => fetch(
-      'https://fanyi.qq.com/api/translate',
+      'https://fanyi.qq.com/api/translate'+`?source=${sl}&target=${tl}&sourceText=${encodeURIComponent(text)}&qtv=${encodeURIComponent(qtv)}&qtk=${encodeURIComponent(qtk)}&sessionUuid=translate_uuid${Date.now()}`,
       {
         credentials: 'omit',
         headers: {
@@ -74,6 +74,7 @@ export const search: SearchFunction<TencentSearchResult, MachineTranslatePayload
           'X-Requested-With': 'XMLHttpRequest',
         },
         method: 'POST',
+        //mode:'no-cors',
         body: `source=${sl}&target=${tl}&sourceText=${encodeURIComponent(text)}&qtv=${encodeURIComponent(qtv)}&qtk=${encodeURIComponent(qtk)}&sessionUuid=translate_uuid${Date.now()}`
       }
     ))
@@ -146,18 +147,20 @@ async function getToken (): Promise<TencentToken> {
       if (qtk) {
         token.qtk = qtk[1]
       }
-    } catch (e) {/* nothing */}
+    } catch (e) { console.log(e) }
     dict_tencent = {
       token,
       tokenDate: Date.now()
     }
     storage.local.set({ dict_tencent })
   }
+  console.log('dict_tencent'+ dict_tencent.token) 
 
   return dict_tencent.token
 }
 
 function setupOriginModifier () {
+  if(browser.isPlugin)
   browser.webRequest.onBeforeSendHeaders.addListener(
     details => {
       if (details && details.requestHeaders) {

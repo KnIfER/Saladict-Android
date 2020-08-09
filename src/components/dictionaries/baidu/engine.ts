@@ -65,41 +65,51 @@ export const search: SearchFunction<BaiduSearchResult, MachineTranslatePayload> 
       : options.tl
   )
 
+  sl='en';
+
   if (payload.isPDF && !options.pdfNewline) {
     text = text.replace(/\n+/g, ' ')
   }
-
-  return getToken()
-    .then(({ gtk, token }) => fetch(
-      'https://fanyi.baidu.com/v2transapi',
+  console.log('process.env.NODE_ENV', process.env.NODE_ENV, sl, tl, text)
+  return getTokenx()
+    .then(({ gtk, token}) => fetch(
+      'https://fanyi.baidu.com/v2transapi?'+`from=${sl}&to=${tl}&query=${encodeURIComponent(text).replace(/%20/g, '+')}&token=${token}&sign=${sign(text, gtk)}&transtype=translang&simple_means_flag=3`,
       {
         method: 'POST',
-        credentials: 'include',
+        // credentials: 'include',
         headers: {
+          'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.106 Safari/537.36',
           'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-          'cookie': process.env.NODE_ENV === 'test'
-            ? 'BAIDUID=8971CB398A02E6B27F50DFF1DE3164BF:FG=1;'
-            : '',
+          // 'cookie': process.env.NODE_ENV === 'test'||1
+          //   ? 'BAIDUID=8971CB398A02E6B27F50DFF1DE3164BF:FG=1;'
+          //   : '',
         },
+        mode: 'no-cors', // no-cors, cors, *same-origin
         body: `from=${sl}&to=${tl}&query=${encodeURIComponent(text).replace(/%20/g, '+')}&token=${token}&sign=${sign(text, gtk)}&transtype=translang&simple_means_flag=3`
       }
     ))
     .then(r => r.json())
     .then(json => handleJSON(json, sl, tl))
+    // .catch(function(error) {
+    //   console.log('发生错误！', error);
+    //   }) as any
+
     // return empty result so that user can still toggle language
-    .catch((): BaiduSearchResult => ({
-      result: {
-        id: 'baidu',
-        sl, tl, langcodes,
-        searchText: { text: '' },
-        trans: { text: '' }
-      }
-    }))
+    // .catch((): BaiduSearchResult => ({
+    //   result: {
+    //     id: 'baidu',
+    //     sl, tl, langcodes,
+    //     searchText: { text: '' },
+    //     trans: { text: '' }
+    //   }
+    // }))
+    
 }
 
 function handleJSON (
   json: BaiduRawResult, sl: string, tl: string
 ): BaiduSearchResult | Promise<BaiduSearchResult> {
+  console.log('处理翻译！', json);
   if (json.error === 998) {
     // missing cookie, fetch again
     return handleNetWorkError()
@@ -141,9 +151,11 @@ function remoteLangCheck (text: string): Promise<string> {
     {
       method: 'POST',
       headers: {
+        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.106 Safari/537.36',
+
         'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
       },
-      credentials: 'omit',
+      // credentials: 'omit',
       body: `query=${text}`,
     },
   )
@@ -152,16 +164,31 @@ function remoteLangCheck (text: string): Promise<string> {
   .catch(() => 'auto')
 }
 
+async function getTokenx (): Promise<{ gtk: string, token: string }> {
+  console.log('getTokenx')
+
+  return {
+    gtk: '320305.131321201',
+    token: 'c59acf1158b50c06b0db8314ca91d47d',
+  }
+}
+
 async function getToken (): Promise<{ gtk: string, token: string }> {
   const response = await fetch('https://fanyi.baidu.com', {
-    credentials: 'include',
+    // credentials: 'include',
     headers: {
-      'cookie': process.env.NODE_ENV === 'test'
-      ? 'BAIDUID=8971CB398A02E6B27F50DFF1DE3164BF:FG=1;'
-      : '',
+      'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.106 Safari/537.36',
+
+      'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
+      // 'cookie': process.env.NODE_ENV === 'test'
+      // ? 'BAIDUID=8971CB398A02E6B27F50DFF1DE3164BF:FG=1;'
+      // : '',
     },
+    mode: 'cors', // no-cors, cors, *same-origin
   })
   const text = await response.text()
+
+  console.log('getToken', (/window.gtk = '([^']+)'/.exec(text) || ['', ''])[1],  (/token: '([^']+)'/.exec(text) || ['', ''])[1])
 
   return {
     gtk: (/window.gtk = '([^']+)'/.exec(text) || ['', ''])[1],
