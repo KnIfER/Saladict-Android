@@ -255,14 +255,17 @@ export default class DictItem extends React.PureComponent<DictItemProps, DictIte
       hasError,
     } = this.state
 
+    var UTX=browser.dictAll[id].TEST
+    var iden=UTX;
+    iden = iden?iden.type:id
     return (
       <section className='panel-DictItem' onClick={this.handleDictItemClick}
         ref={(dom) => this.p = dom}
       >
         <header className='panel-DictItem_Header' onClick={this.toggleFolding}>
-          <img className='panel-DictItem_Logo' src={require('@/components/dictionaries/' + id + '/favicon.png')} alt='dict logo' />
+          <img className='panel-DictItem_Logo' src={UTX?('/'+id+'/favicon.png'):require('@/components/dictionaries/' + id + '/favicon.png')} alt='dict logo' />
           <h1 className='panel-DictItem_Title'>
-            <a href='#' onClick={this.handleDictURLClick}>{t(`dict:${id}`)}</a>
+            <a href='#' onClick={this.handleDictURLClick}>{UTX?UTX.title:t(`dict:${id}`)}</a>
           </h1>
           {searchStatus === SearchStatus.Searching && !hasError &&
             <svg className='panel-DictItem_Loader' width='120' height='10' viewBox='0 0 120 10' xmlns='http://www.w3.org/2000/svg'>
@@ -286,7 +289,7 @@ export default class DictItem extends React.PureComponent<DictItemProps, DictIte
           <article ref={this.bodyRef} className='panel-DictItem_BodyMesure' style={{ opacity: isUnfold ? 1 : 0 }}>
             {searchResult && !hasError &&
               React.createElement<ViewPorps<any>>(
-                require('@/components/dictionaries/' + id + '/View.tsx').default,
+                require('@/components/dictionaries/' + iden + '/View.tsx').default,
                 {
                   t,
                   result: searchResult,

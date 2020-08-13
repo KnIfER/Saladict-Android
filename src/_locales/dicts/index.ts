@@ -1,5 +1,5 @@
 import { RawLocale, RawLocales } from '@/_helpers/i18n'
-import { getALlDicts } from '@/app-config/dicts'
+import { fetchAllDicts } from '@/app-config'
 
 export interface RawDictLocales {
   name: RawLocale
@@ -7,9 +7,14 @@ export interface RawDictLocales {
   helps?: RawLocale
 }
 
-export const dictsLocales: RawLocales = Object.keys(getALlDicts())
+var allDicts=fetchAllDicts();
+
+export const dictsLocales: RawLocales = Object.keys(allDicts)
   .reduce((result, id) => {
-    const locale: RawDictLocales = require('@/components/dictionaries/' + id + '/_locales')
+    //console.log('dictsLocales', allDicts[id])
+    var iden=allDicts[id].TEST;
+    iden = iden?iden.type:id
+    const locale: RawDictLocales = require('@/components/dictionaries/' + iden + '/_locales')
     result[id] = locale.name
     const options = locale.options
     if (options) {

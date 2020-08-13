@@ -18,12 +18,13 @@ getConfig().then(async config => {
   addConfigListener(({ newConfig }) => {
     window.appConfig = newConfig
   })
-})
-
-getActiveProfile().then(async profile => {
-  window.activeProfile = profile
-
-  addActiveProfileListener(({ newProfile }) => {
-    window.activeProfile = newProfile
+  
+  getActiveProfile().then(async profile => {
+    window.activeProfile = profile
+  
+    addActiveProfileListener(({ newProfile }) => {
+      window.activeProfile = newProfile
+    })
   })
 })
+

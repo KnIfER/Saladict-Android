@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import App from './App'
 import { getDefaultConfig, AppConfig } from '@/app-config'
 import { getDefaultProfile, Profile, ProfileIDList } from '@/app-config/profiles'
-import { getConfig, addConfigListener } from '@/_helpers/config-manager'
+import { getConfig, addConfigListener , loadAlloySalad} from '@/_helpers/config-manager'
 import {
   getActiveProfile,
   addActiveProfileListener,
@@ -70,8 +70,9 @@ export class Options extends React.Component<OptionsProps, OptionsState> {
   }
 
   componentDidMount () {
-    Promise.all([getConfig(), getActiveProfile(), getProfileIDList()])
-      .then(async ([ config, profile, profileIDList ]) => {
+    Promise.all([getConfig(), getActiveProfile(), getProfileIDList(), loadAlloySalad()])
+      .then(async ([ config, profile, profileIDList, UTEX ]) => {
+        console.log('UTEX', UTEX);
         this.setState({
           config,
           profile,

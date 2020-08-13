@@ -414,6 +414,7 @@ function initClient (): Promise<typeof window.pageId> {
  */
 function initServer (): void {
   console.log('————!!!initServer!!!————')
+  //fetchALlDicts()
 
   window.pageId = 'background page'
   const selfMsgTester = /^\[\[(.+)\]\]$/

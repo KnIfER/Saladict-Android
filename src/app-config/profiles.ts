@@ -35,17 +35,17 @@ export function _getDefaultProfile (id?: string) {
         'cobuild',
         'cambridge',
         'youdao',
-        'urban',
+        // 'urban',
         'vocabulary',
         'google',
-        'sogou',
+        // 'sogou',
         'zdic',
         'guoyu',
         'liangan',
-        'googledict',
+        // 'googledict',
       ] as Array<keyof ReturnType<typeof getALlDicts>>,
       // settings of each dict will be auto-generated
-      all: getALlDicts()
+      all: browser.dictAll
     },
   }
 }
@@ -93,7 +93,7 @@ export function sentence (): ProfileStorage {
   idItem.name = '%%_sentence_%%'
 
   const profile = getDefaultProfile(idItem.id) as ProfileMutable
-  profile.dicts.selected = ['jukuu', 'bing', 'cnki', 'eudic', 'cobuild', 'cambridge', 'longman', 'macmillan']
+  profile.dicts.selected = [/* 'jukuu', */ 'bing', /* 'cnki', 'eudic',  */'cobuild', 'cambridge', /* 'longman', 'macmillan' */]
 
   const allDict = profile.dicts.all
   allDict.bing.options.tense = false
@@ -164,7 +164,8 @@ export function translation (): ProfileStorage {
   idItem.name = '%%_translation_%%'
 
   const profile = getDefaultProfile(idItem.id) as ProfileMutable
-  profile.dicts.selected = ['google', 'tencent', 'sogou', 'baidu', 'caiyun', 'youdao', 'zdic', 'guoyu', 'liangan']
+  //翻译菌纷纷阵亡！
+  profile.dicts.selected = ['google', /* 'tencent', 'sogou', 'baidu', 'caiyun', */ 'youdao', 'zdic', 'guoyu', 'liangan']
   profile.mtaAutoUnfold = 'always'
 
   return { idItem, profile }

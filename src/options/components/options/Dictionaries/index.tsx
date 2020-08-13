@@ -57,10 +57,17 @@ export class Dictionaries extends React.Component<DictionariesProps, Dictionarie
     updateProfile(profile)
   }
 
+  
+
   render () {
     const { t, profile } = this.props
     const { selected } = profile.dicts
-
+    var d=profile.dicts.all;
+    // console.log('UTX0', d['OED2'])
+    // var getUTX0 = function(id){
+    //   console.log('getUTX0', id, d[id], d[id].TEST)
+    //   return d[id].TEST
+    // }
     return (
       <Row>
         <Col>
@@ -77,7 +84,7 @@ export class Dictionaries extends React.Component<DictionariesProps, Dictionarie
             list={selected.map(id => {
               return {
                 value: id,
-                title: (<DictTitle t={t} dictID={id} lang={profile.dicts.all[id].lang} />)
+                title: (<DictTitle t={t} dictID={id} lang={d[id].lang} UTX={d[id].TEST}/>)
               }
             })}
             onAdd={this.openAddDictModal}

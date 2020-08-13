@@ -1,5 +1,5 @@
 import pako from 'pako'
-import { getDefaultConfig, AppConfig } from '@/app-config'
+import { getDefaultConfig, AppConfig, fetchAllDicts as fetchAllDicts } from '@/app-config'
 import { mergeConfig } from '@/app-config/merge-config'
 import { storage } from './browser-api'
 
@@ -34,6 +34,10 @@ function deflate (config: AppConfig): AppConfigCompressed {
   }
 }
 
+(browser as any).unZip = function(e) {
+  return JSON.parse(pako.inflate(e, { to: 'string' }))
+}
+
 function inflate (config: AppConfig | AppConfigCompressed): AppConfig
 function inflate (config: undefined): undefined
 function inflate (config?: AppConfig | AppConfigCompressed): AppConfig | undefined
@@ -45,7 +49,28 @@ function inflate (config?: AppConfig | AppConfigCompressed): AppConfig | undefin
   return config as AppConfig
 }
 
+export async function loadAlloySalad () {
+  let cm=(browser as any)
+  if(!cm.UTEX) {
+    let json = await fetch('/ALLOYD'
+    //, { mode:'no-cors' }
+    )
+    .then(res => res.json())
+    .catch((): any => (
+      //{result: { }}
+      null
+    ))
+    console.log("内聚外合", json);
+    cm.UTEX = json
+    browser.dictAll=null
+    fetchAllDicts()
+    return json
+  }
+}
+
 export async function initConfig (): Promise<AppConfig> {
+  console.log('initConfig...')
+
   let baseconfig = await getConfig()
 
   baseconfig = baseconfig && baseconfig.version
@@ -63,6 +88,9 @@ export async function resetConfig () {
 }
 
 export async function getConfig (): Promise<AppConfig> {
+  let hey = await loadAlloySalad()
+  console.log('getConfig???', hey)
+  
   const { baseconfig } = await storage.sync.get<{
     baseconfig: AppConfig
   }>('baseconfig')

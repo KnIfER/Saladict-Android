@@ -29,11 +29,12 @@ import websterlearner from '@/components/dictionaries/websterlearner/config'
 import wikipedia from '@/components/dictionaries/wikipedia/config'
 import youdao from '@/components/dictionaries/youdao/config'
 import zdic from '@/components/dictionaries/zdic/config'
+import uplod from '@/components/dictionaries/UPLOD/config'
 
 export function getALlDicts () {
   // For TypeScript to generate typings
   // Follow alphabetical order for easy reading
-  return {
+  var ret = {
     baidu: baidu(),
     bing: bing(),
     caiyun: caiyun(),
@@ -63,7 +64,46 @@ export function getALlDicts () {
     wikipedia: wikipedia(),
     youdao: youdao(),
     zdic: zdic(),
+  };
+
+  var EXTRA = (browser as any).UTEX
+  console.log('getALlDicts_called', EXTRA)
+
+  //var exta1=uplod() as any
+  
+  // ret['OED2']=exta1;
+  // Object.defineProperty(exta1, "TEST", { enumerable: false, writable:true })
+  // exta1.TEST = {
+  //   host : 'http://127.0.0.1:8080/OED2/',
+  //   title : '牛津英语词典',
+  //   type : 'UPLOD',
+  // }
+
+  if(EXTRA) {
+    var KEXTRA = Object.keys(EXTRA)
+    for (let index = 0; index < KEXTRA.length; index++) {
+      const eI = KEXTRA[index];
+      if(!ret[eI]) {
+        var exta1 = uplod()
+        Object.defineProperty(exta1, "TEST", { enumerable: false, writable:true })
+        var extdat=EXTRA[eI];
+        var host = extdat.host;
+        if(host) {
+          exta1.TEST = {
+            host : host,
+            title : extdat.title||eI,
+            type : 'UPLOD',
+          }
+  
+          ret[eI]=exta1;
+        }
+      }
+      
+
+    }
   }
+
+  return ret;
 }
 
 interface DictItemBase {
@@ -92,6 +132,7 @@ interface DictItemBase {
   },
   /** Word count to start searching */
   preferredHeight: number
+  TEST?: any
 }
 
 /**

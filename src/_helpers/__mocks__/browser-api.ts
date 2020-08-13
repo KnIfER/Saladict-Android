@@ -93,11 +93,11 @@ export const storage = {
     get: _storageGet(),
     set: _storageSet(),
     /** Only for local area */
-    addListener: _storageAddListener('local'),
+    addListener: _storageAddListener('sync'),
     /** Only for local area */
-    removeListener: _storageRemoveListener('local'),
+    removeListener: _storageRemoveListener('sync'),
     createStream: noop,
-    dispatch: _dispatchStorageEvent('local'),
+    dispatch: _dispatchStorageEvent('sync'),
   },
   /** Clear all area */
   clear: _storageClear(),

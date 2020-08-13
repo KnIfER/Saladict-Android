@@ -185,19 +185,22 @@ function fetchDictResult (
   data: MsgFetchDictResult,
 ): Promise<MsgFetchDictResultResponse<any>> {
   let search: SearchFunction<DictSearchResult<any>, NonNullable<MsgFetchDictResult['payload']>>
-
+  let id=data.id;
+  var UTXEGINEER=browser.dictAll[id].TEST;
+  var iden=UTXEGINEER;
+  iden = iden?iden.type:id
   try {
-    search = require('@/components/dictionaries/' + data.id + '/engine').search
+    search = require('@/components/dictionaries/' + iden+ '/engine').search
   } catch (err) {
     return Promise.reject(err)
   }
 
-  const payload = data.payload || {}
+  const payload = UTXEGINEER?UTXEGINEER:data.payload || {}
 
   return timeout(search(data.text, window.appConfig, window.activeProfile, payload), 25000)
     .catch(err => {
       if (process.env.DEV_BUILD) {
-        console.warn(data.id, err)
+        console.warn(id, err)
       }
 
       if (err === SearchErrorType.NetWorkError) {
@@ -208,12 +211,12 @@ function fetchDictResult (
 
       return Promise.reject(err)
     })
-    .then(response => ({ ...response, id: data.id }))
+    .then(response => ({ ...response, id: id }))
     .catch(err => {
       if (process.env.DEV_BUILD) {
-        console.warn(data.id, err)
+        console.warn(id, err)
       }
-      return { result: null, id: data.id }
+      return { result: null, id: id }
     })
 }
 

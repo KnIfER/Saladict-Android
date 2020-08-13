@@ -21,6 +21,7 @@ interface Window {
 declare namespace browser{
   var isPlugin:boolean;
   var isMobile:boolean;
+  var dictAll:any;
   function _Language():string;
   function runtime_toggleFoldUnFold(force:any):any;
   function runtime_onMessage_addListener(vrw:any, listener:any):any;

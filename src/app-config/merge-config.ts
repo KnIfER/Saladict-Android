@@ -1,5 +1,4 @@
 import { getDefaultConfig, AppConfig, AppConfigMutable } from '@/app-config'
-import { getALlDicts } from './dicts'
 
 import forEach from 'lodash/forEach'
 import isNumber from 'lodash/isNumber'
@@ -8,14 +7,14 @@ import isBoolean from 'lodash/isBoolean'
 import get from 'lodash/get'
 import set from 'lodash/set'
 
-const defaultAllDicts = getALlDicts()
-
 export default mergeConfig
 
 export function mergeConfig (oldConfig: AppConfig, baseConfig?: AppConfig): AppConfig {
   const base: AppConfigMutable = baseConfig
     ? JSON.parse(JSON.stringify(baseConfig))
     : getDefaultConfig()
+
+  console.log('mergeConfig', oldConfig, baseConfig)
 
   // pre-merge patch start
   let oldVersion = oldConfig.version
@@ -44,8 +43,8 @@ export function mergeConfig (oldConfig: AppConfig, baseConfig?: AppConfig): AppC
     mergeBoolean(`ctxTrans.${id}`)
   })
 
-  merge('autopron.cn.dict', id => defaultAllDicts[id])
-  merge('autopron.en.dict', id => defaultAllDicts[id])
+  // merge('autopron.cn.dict', id => defaultAllDicts[id])
+  // merge('autopron.en.dict', id => defaultAllDicts[id])
 
   merge('autopron.en.accent', val => val === 'us' || val === 'uk')
 

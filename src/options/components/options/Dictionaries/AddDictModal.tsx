@@ -20,11 +20,11 @@ export class AddDictModal extends React.Component<AddDictModalProps> {
 
   renderItem = (dictID: DictID) => {
     const { t, profile } = this.props
-
+    var d = profile.dicts.all;
     return (
       <List.Item>
         <div className='sortable-list-item'>
-          <DictTitle t={t} dictID={dictID} lang={profile.dicts.all[dictID].lang} />
+          <DictTitle t={t} dictID={dictID} lang={d[dictID].lang}  UTX={(d[dictID] as any).TEST}/>
           <div>
             <Button
               title={t('common:add')}

@@ -42,5 +42,5 @@ export default (): BaiduConfig => ({
   },
   options_sel: {
     tl: ['default', 'zh', 'cht', 'en', 'jp', 'kor', 'fra', 'de', 'spa', 'ru'],
-  },
+  }
 })

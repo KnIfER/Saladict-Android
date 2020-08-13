@@ -12,6 +12,8 @@ export function mergeProfile (oldProfile: Profile, baseProfile?: Profile): Profi
     ? JSON.parse(JSON.stringify(baseProfile))
     : getDefaultProfile(oldProfile.id)
 
+    console.log('mergeProfile', base.dicts.all)
+
   mergeString('name')
   mergeString('mtaAutoUnfold')
   mergeBoolean('waveform')

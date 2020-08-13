@@ -27,6 +27,13 @@ export type AppConfig = DeepReadonly<AppConfigMutable>
 export const getDefaultConfig: () => AppConfig = _getDefaultConfig
 export default getDefaultConfig
 
+export function fetchAllDicts () {
+  if(!browser.dictAll) {
+    browser.dictAll = getALlDicts()
+  }
+  return browser.dictAll;
+}
+
 function _getDefaultConfig () {
   return {
     version: 12,
@@ -78,9 +85,9 @@ function _getDefaultConfig () {
     /** context tranlate engines */
     ctxTrans: {
       google: true,
-      tencent: true,
-      sogou: true,
-      baidu: true,
+      tencent: false,
+      sogou: false,
+      baidu: false,
     } as { [id in DictID]: boolean },
 
     /** auto pronunciation */

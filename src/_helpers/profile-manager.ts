@@ -63,7 +63,25 @@ export function getProfileName (name: string, t: TranslationFunction): string {
   return name
 }
 
+export function tweakProfileAllDicts(ret){
+  var all0=ret.dicts.all
+    var all1=browser.dictAll
+    var all1_key=Object.keys(all1)
+    for(var i=29;i<all1_key.length;i++) {
+      var key=all1_key[i]
+      console.log('丫的重新添加?', key)
+      if(!all0[key]) {
+        all0[key] = all1[key]
+        //console.log('丫的重新添加')
+      } else {
+        all0[key].TEST = all1[key].TEST
+      }
+    }
+}
+
 export async function initProfiles (): Promise<Profile> {
+  console.log('initProfiles...')
+
   let profiles: Profile[] = []
   let profileIDList: ProfileIDList = []
   let activeProfileID = ''
@@ -72,6 +90,7 @@ export async function initProfiles (): Promise<Profile> {
     profileIDList: ProfileIDList
     activeProfileID: string
   }>(['profileIDList', 'activeProfileID'])
+
 
   if (response.profileIDList) {
     profileIDList = response.profileIDList.filter(item => Boolean(
@@ -108,8 +127,10 @@ export async function initProfiles (): Promise<Profile> {
 
   // quota bytes per item limit
   for (const profile of profiles) {
-    await updateProfile(profile)
+    //await updateProfile(profile)
   }
+
+  tweakProfileAllDicts(activeProfile)
 
   return activeProfile
 }
@@ -134,7 +155,13 @@ export async function resetAllProfiles () {
 }
 
 export async function getProfile (id: string): Promise<Profile | undefined> {
-  return inflate((await storage.sync.get(id))[id])
+  console.log('get_fucking_profile...');
+  var ret=inflate((await storage.sync.get(id))[id])
+  console.log('get_fucking_profile... 1', ret, browser.dictAll);
+  if(ret) {
+    tweakProfileAllDicts(ret)
+  }
+  return ret
 }
 
 /**
@@ -190,6 +217,7 @@ export async function removeProfile (id: string): Promise<void> {
  * Get the profile under the current mode
  */
 export async function getActiveProfile (): Promise<Profile> {
+  console.log('getActiveProfile')
   const activeProfileID = await getActiveProfileID()
   if (activeProfileID) {
     const profile = await getProfile(activeProfileID)

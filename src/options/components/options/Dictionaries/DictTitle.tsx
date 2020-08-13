@@ -7,6 +7,7 @@ interface DictTitleProps {
   t: TranslationFunction
   dictID: DictID
   lang: string
+  UTX: any
 }
 
 const iconStyle: React.CSSProperties = {
@@ -18,16 +19,17 @@ const iconStyle: React.CSSProperties = {
 
 export default class DictTitle extends React.PureComponent<DictTitleProps> {
   render () {
-    const { t, dictID, lang } = this.props
+    const { t, dictID, lang, UTX } = this.props
+    console.log('UTX', UTX)
     const title = t(`dict:${dictID}`)
     return (
       <span>
         <img
           style={iconStyle}
-          src={require('@/components/dictionaries/' + dictID + '/favicon.png')}
-          alt={`logo ${title}`}
+          src={UTX?('/'+dictID+'/favicon.png'):require('@/components/dictionaries/' + dictID + '/favicon.png')}
+          alt={UTX?UTX.title:`logo ${title}`}
         />
-        {title}
+        {UTX?UTX.title:title}
         <LangCodeList t={t} langs={lang} />
       </span>
     )
